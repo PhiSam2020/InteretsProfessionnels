@@ -1,11 +1,9 @@
-
-```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explorateur d'Intérêts Métierscope (RIASEC) v7 - par Ψlippe SAMIER</title>
+    <title>Explorateur d'Intérêts Métierscope (RIASEC) v9 - par Ψlippe SAMIER</title>
     <!-- Librairies CSS et Fonts -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
@@ -22,6 +20,7 @@
         --primary-color: #0d9488; /* Teal 600 */
         --secondary-color: #3b82f6; /* Blue 500 */
         --accent-color: #f59e0b; /* Amber 500 */
+        --info-color: #2980b9; /* Bleu Pierre - Pour les boutons de gestion */
         --light-bg: #f0fdfa; /* Teal 50 */
         --content-bg: #ffffff;
         --panel-left-bg: #ccfbf1; /* Teal 100 */
@@ -81,6 +80,8 @@
     h3 { font-size: 1.25rem; margin: 1.5rem 0 1rem 0; font-weight: 600; font-family: 'Poppins', sans-serif; }
     #info-box h4 { font-size: 1.2em; color: var(--accent-color); margin-top: 0; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--accent-color); font-weight: 700; }
     h4 { font-size: 1.1rem; color: var(--secondary-color); margin-top: 1.5rem; margin-bottom: 0.75rem; font-weight: 600; }
+    #main-user-identifier { text-align: center; color: var(--secondary-color); font-weight: 700; font-size: 1.2rem; margin-bottom: 2rem; min-height: 1.5rem; }
+
 
     p { margin-bottom: 1.1rem; font-weight: 400; font-size: 0.98rem; }
     #info-box p { font-size: 0.9em; line-height: 1.6; margin-bottom: 0.7rem; }
@@ -92,7 +93,7 @@
     .author-name { font-weight: bold; color: #dc2626; font-size: 1.05em; }
 
     #notes-container label { margin-bottom: 8px; font-weight: 600; color: var(--primary-color); font-size: 1rem; }
-    #user-notes { width: 100%; height: 130px; min-height: 80px; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin: 0 0 1rem 0; resize: vertical; box-sizing: border-box; font-size: 0.95rem; background-color: var(--light-bg); }
+    #user-notes { width: 100%; height: 130px; min-height: 80px; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin: 0 0 1rem 0; resize: vertical; box-sizing: border-box; font-size: 0.95rem; background-color: var(--light-bg); flex-grow: 1;}
     #user-notes:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2); outline: none; }
     .mood-tracker { margin: 1rem 0; flex-shrink: 0; }
     .mood-tracker span { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-muted); font-size: 0.95rem;}
@@ -100,23 +101,38 @@
     .mood-btn { background: #e5e7eb; border: 1px solid var(--border-color); border-radius: 50%; width: 40px; height: 40px; font-size: 1.6rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; line-height: 1; }
     .mood-btn:hover { transform: scale(1.15); box-shadow: var(--box-shadow); border-color: #9ca3af; }
     .mood-btn.selected { border: 2px solid var(--primary-color); background-color: var(--panel-left-bg); box-shadow: inset 0 1px 2px rgba(0,0,0,0.08); transform: scale(1.1); }
-    .notes-buttons { display: flex; gap: 10px; margin-top: 1.2rem; flex-shrink: 0; }
-    .notes-buttons button { padding: 10px 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; flex: 1; transition: var(--transition); box-shadow: var(--box-shadow); display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.9rem; }
-    .notes-buttons button:hover { transform: translateY(-2px); box-shadow: var(--box-shadow-lg); }
-    .notes-buttons button i { font-size: 0.9em; }
+    
+    .actions-group { display: flex; flex-direction: column; gap: 8px; margin-top: 1rem; flex-shrink: 0; }
+    .actions-group p { text-align: center; color: var(--text-muted); font-weight: bold; font-size: 0.8rem; text-transform: uppercase; margin: 0.5rem 0 0.2rem 0; letter-spacing: 0.5px; }
+    .actions-group button { padding: 9px 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; flex: 1; transition: var(--transition); box-shadow: var(--box-shadow); display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; }
+    .actions-group button:hover { transform: translateY(-2px); box-shadow: var(--box-shadow-lg); }
+    .actions-group button i { font-size: 0.9em; }
+
     #save-notes-button { background-color: var(--primary-color); color: white; }
     #save-notes-button:hover { background-color: #0f766e; }
-    #load-notes-button { background-color: var(--secondary-color); color: white; }
-    #load-notes-button:hover { background-color: #1e40af; }
+    #load-notes-button { background-color: var(--info-color); color: white; }
+    #load-notes-button:hover { background-color: #1f618d; }
+    #export-data-button, #import-data-button { background-color: var(--secondary-color); color: white; }
+    #export-data-button:hover, #import-data-button:hover { background-color: #1e40af; }
+    #export-html-button { background-color: var(--accent-color); color: white; }
+    #export-html-button:hover { background-color: #d97706; }
+    #reset-app-button { background-color: #c0392b; color: white; margin-top: 10px; }
+    #reset-app-button:hover { background-color: #943126; }
+    
     #save-feedback { background-color: var(--secondary-color); color: white; text-align: center; padding: 10px; border-radius: 8px; margin-top: 1rem; display: none; flex-shrink: 0; font-weight: 500; font-size: 0.9rem; box-shadow: var(--box-shadow); transition: opacity 0.3s ease-out; opacity: 0;}
 
     #nav-bar {
         position: fixed; top: 0; left: 0; right: 0; background-color: rgba(255, 255, 255, 0.92);
         backdrop-filter: blur(10px); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-        padding: 10px 10px; z-index: 1000; display: flex; justify-content: center;
+        padding: 10px 20px; z-index: 1000; display: flex; justify-content: space-between; align-items: center;
         border-bottom: 1px solid var(--border-color); height: 70px;
     }
-    #nav-bar ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; align-items: center; max-width: 1200px; }
+    #user-info-top { display: flex; gap: 10px; align-items: center; width: 310px; }
+    #user-info-top input { padding: 5px 8px; font-size: 0.9rem; width: 140px; margin: 0; border: 1px solid var(--border-color); border-radius: 4px; }
+    #nav-center { display: flex; justify-content: center; }
+    #nav-right-placeholder { width: 310px; }
+    
+    #nav-bar ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; align-items: center; }
     #nav-bar li { flex-shrink: 0; }
     #nav-bar a { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background-color: #f0fdfa; color: var(--primary-color); font-weight: 600; font-size: 0.8rem; transition: var(--transition); box-shadow: none; border: 1px solid transparent; }
     #nav-bar a:hover { background-color: var(--primary-color); color: white; transform: scale(1.1); box-shadow: var(--box-shadow); }
@@ -249,17 +265,15 @@
     #generate-interest-chart-button { margin-top: 0.5rem; }
 
     /* --- STYLES POUR LA SECTION GESTIONNAIRE FICHES (INTÉGRÉE COMME UN DAY-ROW STANDARD) --- */
-    /* Le .day-row #section-fiches-metierscope utilisera les styles .day-row existants */
-    /* On stylise les colonnes internes spécifiques à cette section */
     #section-fiches-metierscope .column-left {
-        flex-basis: 45%; /* Ajuster pour donner un peu plus de place au formulaire/liste */
+        flex-basis: 45%;
         min-width: 350px;
-        background-color: var(--panel-right-bg); /* Fond différent pour la distinguer */
+        background-color: var(--panel-right-bg);
     }
     #section-fiches-metierscope .column-right {
         flex-basis: 55%;
-        background-color: var(--content-bg); /* Fond standard pour l'iframe */
-        padding: 15px; /* Moins de padding pour l'iframe */
+        background-color: var(--content-bg);
+        padding: 15px;
     }
     #section-fiches-metierscope.day-row::before {
         content: "Gestionnaire Fiches Métierscope"; 
@@ -313,21 +327,77 @@
     #app-fiches-list .fiche-item-hybride .button-group { margin-top: 8px; margin-bottom: 0; justify-content: flex-end; }
     #app-fiches-list .fiche-item-hybride .button-group button.action { padding: 5px 10px; font-size: 0.75em; }
     
-    .        /* Styles pour les couleurs d'évaluation (appliquées aussi au titre du métier) */
-        .eval-tres-porteur { color: #15803d !important; font-weight: bold; } /* Vert foncé */
-        .eval-assez-porteur { color: #166534 !important; } /* Vert */
-        .eval-moyen-porteur { color: #1d4ed8 !important; } /* Bleu */
-        .eval-peu-porteur { color: #f97316 !important; } /* ORANGE VIF */
-        .eval-pas-porteur { color: #b91c1c !important; font-weight: bold; } /* Rouge foncé */
+    .eval-tres-porteur { color: #15803d !important; font-weight: bold; }
+    .eval-assez-porteur { color: #166534 !important; }
+    .eval-moyen-porteur { color: #1d4ed8 !important; }
+    .eval-peu-porteur { color: #f97316 !important; }
+    .eval-pas-porteur { color: #b91c1c !important; font-weight: bold; }
 
     #app-iframe-warning { font-size: 0.8em; margin-top: 5px; margin-bottom: 10px; }
     .iframe-placeholder-app { font-size:0.9em; }
     #app-iframe-viewer { height: calc(100vh - 220px); min-height:400px; border: 1px solid var(--border-color); background-color: #e9ecef; border-radius:var(--border-radius); overflow:hidden; }
-    /* Ajustement pour la section fiches quand elle est un .day-row standard */
+    
     @media (max-width: 767.98px) {
         #section-fiches-metierscope .column-left { border-right: none; border-bottom: 1px solid var(--border-color); }
         #section-fiches-metierscope .column-right { padding-top: 15px; }
         #app-iframe-viewer { min-height: 350px; height: 60vh; }
+    }
+    
+    /* --- STYLES POUR LA NOUVELLE SECTION GEMINI --- */
+    #section-gemini-synthesis.day-row::before {
+        content: "Synthèse & Pistes Métiers par l'IA";
+        background-image: linear-gradient(to right, #8b5cf6, #c084fc); /* Violet gradient */
+    }
+    #gemini-prompt-output {
+        width: 100%;
+        min-height: 250px;
+        height: auto;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 12px;
+        margin: 1.5rem 0 1rem 0;
+        resize: vertical;
+        box-sizing: border-box;
+        font-family: monospace;
+        font-size: 0.85rem;
+        background-color: #f8fafc;
+        color: var(--text-color);
+        white-space: pre-wrap; /* Important pour respecter les retours à la ligne */
+    }
+    .gemini-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+    #generate-prompt-btn, #copy-prompt-btn {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    #generate-prompt-btn:hover, #copy-prompt-btn:hover {
+        background-color: #0f766e;
+    }
+    #open-gemini-btn {
+        background-color: var(--secondary-color);
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: var(--transition);
+        box-shadow: var(--box-shadow);
+    }
+    #open-gemini-btn:hover {
+        background-color: #1e40af;
+        transform: translateY(-2px);
+        box-shadow: var(--box-shadow-lg);
+    }
+    #copy-prompt-btn[disabled] {
+        background-color: #9ca3af;
+        cursor: not-allowed;
     }
 
 
@@ -355,8 +425,10 @@
           .container { margin-left: auto; margin-right: auto; max-width: 100%; padding: 0 1rem; }
      }
      @media (max-width: 767.98px) { 
-        body { padding-top: 60px; padding-bottom: 80px; font-size: 15px; }
-        #nav-bar { height: auto; min-height:60px; padding: 5px 10px; }
+        body { padding-top: 100px; padding-bottom: 80px; font-size: 15px; }
+        #nav-bar { height: auto; min-height:60px; padding: 5px; flex-direction: column; align-items: center; gap: 5px; }
+        #user-info-top { width: 100%; justify-content: center; }
+        #nav-right-placeholder { display: none; }
         #nav-bar ul { gap: 3px; }
         #nav-bar a { width: 30px; height: 30px; font-size: 0.75rem; }
         .nav-attribution { display: none; }
@@ -375,18 +447,18 @@
         .container { max-width: 100%; padding: 0 1rem; margin-left: auto; margin-right: auto; }
         #user-notes { height: 110px; }
         .mood-btn { width: 38px; height: 38px; font-size: 1.5rem;}
-        .notes-buttons button { font-size: 0.9rem; padding: 9px 13px; }
         .day-row { margin: 2.5rem 0; }
         .day-row::before { padding: 4px 12px; font-size: 0.8rem; top: -10px;}
         .column { padding: 15px; }
         .question .options { font-size: 0.8rem; }
         .question .options label { min-width: 40px; }
-        #interet-32, #section-fiches-metierscope { flex-direction: column; } 
+        #interet-32, #section-fiches-metierscope, #section-gemini-synthesis { flex-direction: column; } 
         #interet-32 .column-left, #interet-32 .column-right,
-        #section-fiches-metierscope .column-left, #section-fiches-metierscope .column-right { 
+        #section-fiches-metierscope .column-left, #section-fiches-metierscope .column-right,
+        #section-gemini-synthesis .column-left, #section-gemini-synthesis .column-right {
             flex-basis: auto; border-right: none; border-bottom: 1px solid var(--border-color); 
         }
-        #interet-32 .column-right, #section-fiches-metierscope .column-right { border-bottom: none; }
+        #interet-32 .column-right, #section-fiches-metierscope .column-right, #section-gemini-synthesis .column-right { border-bottom: none; }
      }
 
     /* --- Print Styles --- */
@@ -407,7 +479,8 @@
          .metierscope-guidance:not(#interet-31 .metierscope-guidance):not(#section-fiches-metierscope .metierscope-guidance),
          #current-fiche-form-app .button-group, 
          #app-load-current-iframe-btn, #app-clear-form-btn,
-         #app-iframe-viewer, #app-iframe-warning
+         #app-iframe-viewer, #app-iframe-warning,
+         #section-gemini-synthesis /* Hide Gemini section from print */
           { display: none !important; }
 
 
@@ -465,7 +538,6 @@
          a[href^="#"]:after { content: ""; }
     }
 </style>
-<!-- ========== FIN DE LA PARTIE A : HTML DE BASE ET CSS COMPLET ========== -->
 </head>
 <body>
     <!-- Partie B: Sidebars Info et Notes, Barre de Navigation -->
@@ -474,7 +546,7 @@
         <p><strong>"Votre Cartographie d'Intérêts Métierscope"</strong> vous aide à identifier vos centres d'intérêts professionnels clés (RIASEC).</p>
         <p>Guidé par <span class="author-name">Ψ</span><strong class="author-name">lippe SAMIER</strong>, explorez des activités (colonne de gauche de chaque intérêt) et vos réflexions (colonne de droite de chaque intérêt, et panneau de droite fixe) pour mieux cibler vos recherches sur <a href="https://candidat.francetravail.fr/metierscope/centres-interet" target="_blank" class="text-blue-600 hover:text-blue-800">Métierscope</a>.</p>
         <p><strong>Nouveau :</strong> Une section "Gestionnaire de Fiches Métierscope" (accessible via <i class="fas fa-clipboard-list"></i> dans la barre de navigation) vous permet de suivre et évaluer les fiches métiers que vous consultez.</p>
-        <p class="mt-3"><small><strong>Important :</strong> Sauvegardez régulièrement via "Sauver Tout" (dans le panneau de droite) pour enregistrer votre progression dans votre navigateur. Utilisez "Charger Tout" pour la restaurer.</small></p>
+        <p class="mt-3"><small><strong>Important :</strong> Utilisez le panneau de droite pour sauvegarder votre session (dans le navigateur), ou pour exporter/importer vos données dans un fichier pour une conservation à long terme.</small></p>
         <p class="mt-3"><small><strong>Conseil :</strong> Sur grand écran, les panneaux latéraux d'information et de notes sont fixes. Sur tablette et mobile, ils s'intègrent au flux de la page.</small></p>
     </div>
 
@@ -491,64 +563,87 @@
                 <button class="mood-btn" data-mood="5" title="Très aligné/Clair">🎯</button>
             </div>
         </div>
-        <div class="notes-buttons">
-            <button id="save-notes-button" title="Sauvegarder TOUTES les données (notes, scores, images, fiches) dans le navigateur"><i class="fas fa-save"></i> Sauver Tout</button>
-            <button id="load-notes-button" title="Charger les données sauvegardées depuis le navigateur"><i class="fas fa-upload"></i> Charger Tout</button>
+        
+        <div class="actions-group">
+            <p>Session Navigateur</p>
+            <button id="save-notes-button" title="Sauvegarder la session actuelle dans le navigateur"><i class="fas fa-save"></i> Sauver (Navigateur)</button>
+            <button id="load-notes-button" title="Charger la dernière session depuis le navigateur"><i class="fas fa-upload"></i> Charger (Navigateur)</button>
         </div>
+        
+        <div class="actions-group mt-4">
+            <p>Gestion Fichiers Session</p>
+            <button id="export-data-button" title="Exporter toutes les données actuelles dans un fichier .json"><i class="fas fa-file-export"></i> Exporter Session (.json)</button>
+            <button id="export-html-button" title="Exporter un rapport des scores et fiches dans un fichier .html"><i class="fas fa-file-alt"></i> Exporter Rapport (.html)</button>
+            <button id="import-data-button" title="Importer une session depuis un fichier .json"><i class="fas fa-file-import"></i> Importer Session (.json)</button>
+        </div>
+
+        <div class="actions-group mt-4">
+            <button id="reset-app-button" title="Effacer toutes les données du navigateur et réinitialiser l'application"><i class="fas fa-trash-alt"></i> Réinitialiser l'Application</button>
+        </div>
+
         <div id="save-feedback"></div>
     </div>
 
      <div id="nav-bar">
-        <ul>
-             <li><a href="#interet-1" title="I1: Nature/Animaux (R)">1</a></li>
-             <li><a href="#interet-2" title="I2: Enquêtes/Investig. (I)">2</a></li>
-             <li><a href="#interet-3" title="I3: Manier Chiffres (C)">3</a></li>
-             <li><a href="#interet-4" title="I4: Exp. Scientifiques (I)">4</a></li>
-             <li><a href="#interet-5" title="I5: Animer/Divertir (A)">5</a></li>
-             <li><a href="#interet-6" title="I6: Plein Air (R)">6</a></li>
-             <li><a href="#interet-7" title="I7: Construire/Fabriquer (R)">7</a></li>
-             <li><a href="#interet-8" title="I8: Organiser/Planifier (C)">8</a></li>
-             <li><a href="#interet-9" title="I9: Machines/Outils (R)">9</a></li>
-             <li><a href="#interet-10" title="I10: Écrire/Traduire (A)">10</a></li>
-             <li><a href="#interet-11" title="I11: Vendre/Négocier (E)">11</a></li>
-             <li><a href="#interet-12" title="I12: Avec Enfants (S)">12</a></li>
-             <li><a href="#interet-13" title="I13: Soigner/Aider (S)">13</a></li>
-             <li><a href="#interet-14" title="I14: Informer/Communiquer (S)">14</a></li>
-             <li><a href="#interet-15" title="I15: Manager Équipe (E)">15</a></li>
-             <li><a href="#interet-16" title="I16: Manuel Précision (R)">16</a></li>
-             <li><a href="#interet-17" title="I17: Conduire Véhicules (R)">17</a></li>
-             <li><a href="#interet-18" title="I18: Dans l'Urgence (E)">18</a></li>
-             <li><a href="#interet-19" title="I19: Enseigner/Former (S)">19</a></li>
-             <li><a href="#interet-20" title="I20: Dessiner/Concevoir (A)">20</a></li>
-             <li><a href="#interet-21" title="I21: Créer/Imaginer (A)">21</a></li>
-             <li><a href="#interet-22" title="I22: Cultiver/Élever (R)">22</a></li>
-             <li><a href="#interet-23" title="I23: Réparer/Entretenir (R)">23</a></li>
-             <li><a href="#interet-24" title="I24: Convaincre/Persuader (E)">24</a></li>
-             <li><a href="#interet-25" title="I25: Gérer Budget (C)">25</a></li>
-             <li><a href="#interet-26" title="I26: Défendre/Conseiller (S)">26</a></li>
-             <li><a href="#interet-27" title="I27: Protéger/Secourir (S)">27</a></li>
-             <li><a href="#interet-28" title="I28: Accueillir/Servir (S)">28</a></li>
-             <li><a href="#interet-29" title="I29: Voyager/Découvrir (E)">29</a></li>
-             <li><a href="#interet-30" title="I30: Rechercher/Innover (I)">30</a></li>
-            <li><a href="#interet-31" title="Bilan RIASEC">B</a></li>
-            <li><a href="#interet-32" title="Profil Radar">P</a></li>
-            <li><a href="#section-fiches-metierscope" title="Gestionnaire Fiches Métierscope"><i class="fas fa-clipboard-list"></i></a></li>
-            <li><span class="nav-attribution"><span class="author-name">Ψ</span><strong class="author-name">.S</strong></span></li>
-        </ul>
+        <div id="user-info-top">
+            <input type="text" id="top-user-nom" placeholder="Nom Utilisateur...">
+            <input type="text" id="top-user-prenom" placeholder="Prénom Utilisateur...">
+        </div>
+        <div id="nav-center">
+            <ul>
+                 <li><a href="#interet-1" title="I1: Nature/Animaux (R)">1</a></li>
+                 <li><a href="#interet-2" title="I2: Enquêtes/Investig. (I)">2</a></li>
+                 <li><a href="#interet-3" title="I3: Manier Chiffres (C)">3</a></li>
+                 <li><a href="#interet-4" title="I4: Exp. Scientifiques (I)">4</a></li>
+                 <li><a href="#interet-5" title="I5: Animer/Divertir (A)">5</a></li>
+                 <li><a href="#interet-6" title="I6: Plein Air (R)">6</a></li>
+                 <li><a href="#interet-7" title="I7: Construire/Fabriquer (R)">7</a></li>
+                 <li><a href="#interet-8" title="I8: Organiser/Planifier (C)">8</a></li>
+                 <li><a href="#interet-9" title="I9: Machines/Outils (R)">9</a></li>
+                 <li><a href="#interet-10" title="I10: Écrire/Traduire (A)">10</a></li>
+                 <li><a href="#interet-11" title="I11: Vendre/Négocier (E)">11</a></li>
+                 <li><a href="#interet-12" title="I12: Avec Enfants (S)">12</a></li>
+                 <li><a href="#interet-13" title="I13: Soigner/Aider (S)">13</a></li>
+                 <li><a href="#interet-14" title="I14: Informer/Communiquer (S)">14</a></li>
+                 <li><a href="#interet-15" title="I15: Manager Équipe (E)">15</a></li>
+                 <li><a href="#interet-16" title="I16: Manuel Précision (R)">16</a></li>
+                 <li><a href="#interet-17" title="I17: Conduire Véhicules (R)">17</a></li>
+                 <li><a href="#interet-18" title="I18: Dans l'Urgence (E)">18</a></li>
+                 <li><a href="#interet-19" title="I19: Enseigner/Former (S)">19</a></li>
+                 <li><a href="#interet-20" title="I20: Dessiner/Concevoir (A)">20</a></li>
+                 <li><a href="#interet-21" title="I21: Créer/Imaginer (A)">21</a></li>
+                 <li><a href="#interet-22" title="I22: Cultiver/Élever (R)">22</a></li>
+                 <li><a href="#interet-23" title="I23: Réparer/Entretenir (R)">23</a></li>
+                 <li><a href="#interet-24" title="I24: Convaincre/Persuader (E)">24</a></li>
+                 <li><a href="#interet-25" title="I25: Gérer Budget (C)">25</a></li>
+                 <li><a href="#interet-26" title="I26: Défendre/Conseiller (S)">26</a></li>
+                 <li><a href="#interet-27" title="I27: Protéger/Secourir (S)">27</a></li>
+                 <li><a href="#interet-28" title="I28: Accueillir/Servir (S)">28</a></li>
+                 <li><a href="#interet-29" title="I29: Voyager/Découvrir (E)">29</a></li>
+                 <li><a href="#interet-30" title="I30: Rechercher/Innover (I)">30</a></li>
+                <li><a href="#interet-31" title="Bilan RIASEC">B</a></li>
+                <li><a href="#interet-32" title="Profil Radar">P</a></li>
+                <li><a href="#section-fiches-metierscope" title="Gestionnaire Fiches Métierscope"><i class="fas fa-clipboard-list"></i></a></li>
+                <li><a href="#section-gemini-synthesis" title="Synthèse par l'IA (Gemini)"><i class="fas fa-robot"></i></a></li>
+                <li><span class="nav-attribution"><span class="author-name">Ψ</span><strong class="author-name">.S</strong></span></li>
+            </ul>
+        </div>
+        <div id="nav-right-placeholder"></div>
     </div>
 
     <div class="container">
         <h1>Explorateur d'Intérêts Métierscope</h1>
+        <div id="main-user-identifier"></div>
         <span class="attribution">un voyage introspectif en 30 centres d'intérêts par <span class="author-name">Ψ</span><strong class="author-name">lippe SAMIER</strong></span>
 
         <div class="intro-section">
             <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2FyZWVyJTIwY2hvaWNlfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60" alt="Image symbolisant les choix de carrière, une boussole ou des chemins" class="intro-image">
             <p>Bienvenue dans cette exploration de vos intérêts professionnels ! Nous identifierons les types d'activités qui vous attirent et réfléchirons à leur signification pour vous. Prêt(e) à cartographier votre profil d'intérêts pour mieux naviguer <a href="https://candidat.francetravail.fr/metierscope/centres-interet" target="_blank" class="text-blue-600 hover:text-blue-800">Métierscope</a> ?</p>
-            <p><small><strong>Important :</strong> Pensez à cliquer sur <strong class="text-blue-600">"Sauver Tout"</strong> (dans le panneau de droite) pour enregistrer votre progression dans votre navigateur. Utilisez <strong class="text-blue-600">"Charger Tout"</strong> pour la restaurer lors d'une prochaine visite.</small></p>
+            <p><small><strong>Important :</strong> Utilisez le panneau de droite pour la gestion de vos données. Vous pouvez sauvegarder votre progression dans votre navigateur ou l'exporter dans un fichier pour une conservation à long terme.</small></p>
             <p><small><strong>Note :</strong> Ceci est un outil informel d'auto-exploration.</small></p>
         </div>
         <hr>
-<!-- ========== FIN DE LA PARTIE A : HTML DE BASE ET CSS ========== -->
+
 <!-- ==================== INTÉRÊT 1: J'aime travailler en contact avec la nature et les animaux (R) ==================== -->
 <div class="day-row" id="interet-1" data-day-label="I1: Nature/Anim. (R)">
     <div class="column column-left">
@@ -2077,7 +2172,7 @@
                 <p><strong>Sur Métierscope :</strong> Si cet intérêt est fort, explorez les métiers liés à la rubrique <a href="https://candidat.francetravail.fr/metierscope/centres-interet/23/je-souhaite-proteger-et-secourir" target="_blank" class="text-blue-600 hover:text-blue-800">"Je souhaite protéger et secourir"</a>.</p>
             </div>
             <p><strong>Concept :</strong> Cet intérêt implique une forte capacité à gérer le stress, à prendre des décisions rapides et pertinentes dans des contextes souvent imprévisibles et à fort enjeu. Il concerne les métiers où l'intervention immédiate est cruciale pour la sécurité, la santé ou la résolution de problèmes critiques.</p>
-            <div class="explanation-section"><h4>Pistes de réflexion :</h4><ol><li>Quel type de situation d'urgence vous attire le plus : médicale, sécuritaire, technique, humanitaire ?</li><li>Comment évaluez-vous votre résistance au stress et votre capacité à agir de manière organisée sous pression ?</li><li>Êtes-vous prêt(e) à accepter des horaires irréguliers, des gardes et une forte charge émotionnelle ?</li></ol></div>
+            <div class="explanation-section"><h4>Pistes de Réflexion :</h4><ol><li>Quel type de situation d'urgence vous attire le plus : médicale, sécuritaire, technique, humanitaire ?</li><li>Comment évaluez-vous votre résistance au stress et votre capacité à agir de manière organisée sous pression ?</li><li>Êtes-vous prêt(e) à accepter des horaires irréguliers, des gardes et une forte charge émotionnelle ?</li></ol></div>
             <p class="mt-6"><strong>Point Clé :</strong> Les métiers de l'urgence exigent un grand sang-froid, une excellente réactivité, des compétences techniques solides, une bonne condition physique et mentale, et une forte capacité à travailler en équipe dans des conditions intenses.</p>
             <div class="quote-box"><p>"Dans la crise, le sage construit des ponts et le fou des barrages."</p><cite>— Proverbe africain</cite></div>
             <p class="source"><em>Inspirations : Sapeur-pompier, urgentiste, policier, militaire, technicien de maintenance critique...</em></p>
@@ -2184,8 +2279,6 @@
         </div>
     </div>
 </div>
-
-
 <!-- ==================== INTÉRÊT 20: J'aime dessiner, concevoir (A) ==================== -->
 <div class="day-row" id="interet-20" data-day-label="I20: Dessiner (A)">
     <div class="column column-left">
@@ -2735,7 +2828,7 @@
                 <p><strong>Sur Métierscope :</strong> Si cet intérêt est fort, explorez les métiers liés à la rubrique <a href="https://candidat.francetravail.fr/metierscope/centres-interet/15/aime-manier-les-chiffres" target="_blank" class="text-blue-600 hover:text-blue-800">"J'aime manier les chiffres"</a>.</p>
             </div>
             <p><strong>Concept :</strong> Cet intérêt est essentiel dans tous les secteurs d'activité. Il s'agit de la capacité à manier les chiffres avec rigueur pour assurer la viabilité économique d'un projet, d'une entreprise ou d'une organisation. Cela implique souvent des compétences en comptabilité, en analyse financière, et une bonne compréhension des enjeux économiques.</p>
-            <div class="explanation-section"><h4>Pistes de réflexion :</h4><ol><li>Quel aspect de la gestion financière vous attire le plus : la comptabilité pure, l'analyse prévisionnelle, le contrôle de gestion, l'investissement, la gestion de patrimoine ?</li><li>Êtes-vous à l'aise avec la nécessité d'une grande rigueur, le respect des normes et réglementations, et la responsabilité liée aux décisions financières ?</li><li>Comment percevez-vous le rôle des chiffres dans la stratégie et la pérennité d'une organisation ?</li></ol></div>
+            <div class="explanation-section"><h4>Pistes de Réflexion :</h4><ol><li>Quel aspect de la gestion financière vous attire le plus : la comptabilité pure, l'analyse prévisionnelle, le contrôle de gestion, l'investissement, la gestion de patrimoine ?</li><li>Êtes-vous à l'aise avec la nécessité d'une grande rigueur, le respect des normes et réglementations, et la responsabilité liée aux décisions financières ?</li><li>Comment percevez-vous le rôle des chiffres dans la stratégie et la pérennité d'une organisation ?</li></ol></div>
             <p class="mt-6"><strong>Point Clé :</strong> Les métiers de la gestion budgétaire et comptable demandent une grande précision, un esprit d'analyse, une forte intégrité et souvent une bonne maîtrise des outils informatiques spécialisés.</p>
             <div class="quote-box"><p>"Ne comptez pas les jours, faites que les jours comptent. Et comptez bien votre argent, aussi."</p><cite>— (Adaptation humoristique)</cite></div>
             <p class="source"><em>Inspirations : Comptable, contrôleur de gestion, directeur financier, conseiller en gestion de patrimoine, auditeur...</em></p>
@@ -2828,7 +2921,7 @@
                 <p><strong>Sur Métierscope :</strong> Si cet intérêt est fort, explorez les métiers liés à la rubrique <a href="https://candidat.francetravail.fr/metierscope/centres-interet/11/aime-faire-respecter-la-loi-les-regles" target="_blank" class="text-blue-600 hover:text-blue-800">"J'aime faire respecter la loi, les règles"</a>.</p>
             </div>
             <p><strong>Concept :</strong> Cet intérêt recouvre les activités qui visent à représenter, à guider ou à protéger des individus, des groupes ou des organisations. Il implique une bonne capacité d'analyse, d'argumentation, de communication et souvent une connaissance approfondie de domaines spécifiques (droit, social, finance, carrière...).</p>
-            <div class="explanation-section"><h4>Pistes de réflexion :</h4><ol><li>Quel type de défense ou de conseil vous attire : juridique, social, financier, en orientation, en ressources humaines ? Auprès de quel public ?</li><li>Êtes-vous à l'aise avec la nécessité de comprendre des textes réglementaires ou des situations complexes pour apporter le meilleur conseil ?</li><li>Comment gérez-vous la responsabilité et l'impact de vos conseils ou de vos actions de défense sur la vie des autres ?</li></ol></div>
+            <div class="explanation-section"><h4>Pistes de Réflexion :</h4><ol><li>Quel type de défense ou de conseil vous attire : juridique, social, financier, en orientation, en ressources humaines ? Auprès de quel public ?</li><li>Êtes-vous à l'aise avec la nécessité de comprendre des textes réglementaires ou des situations complexes pour apporter le meilleur conseil ?</li><li>Comment gérez-vous la responsabilité et l'impact de vos conseils ou de vos actions de défense sur la vie des autres ?</li></ol></div>
             <p class="mt-6"><strong>Point Clé :</strong> Les métiers de la défense et du conseil exigent une grande rigueur intellectuelle, d'excellentes qualités relationnelles et de communication, un sens éthique développé et souvent une capacité à gérer des situations conflictuelles ou délicates.</p>
             <div class="quote-box"><p>"Conseiller, c'est presque aider."</p><cite>— Proverbe français</cite></div>
             <p class="source"><em>Inspirations : Avocat, juriste, conseiller d'orientation, assistant social, conseiller financier, médiateur...</em></p>
@@ -3017,7 +3110,7 @@
                 </ul>
             </div>
             <p><strong>Concept :</strong> Cet intérêt est central dans tous les métiers de service où la qualité de la relation avec le client ou l'usager est primordiale. Il implique des compétences en communication, de l'empathie, de la patience, et une volonté de rendre l'expérience de l'autre la plus agréable et efficace possible.</p>
-            <div class="explanation-section"><h4>Pistes de réflexion :</h4><ol><li>Dans quel secteur aimeriez-vous exercer cet accueil ou ce service (hôtellerie, restauration, tourisme, commerce, transport, administration, santé...) ?</li><li>Êtes-vous à l'aise avec la gestion des réclamations ou des clients mécontents, et capable de trouver des solutions ?</li><li>L'aspect relationnel direct avec une clientèle variée est-il un moteur essentiel pour vous ?</li></ol></div>
+            <div class="explanation-section"><h4>Pistes de Réflexion :</h4><ol><li>Dans quel secteur aimeriez-vous exercer cet accueil ou ce service (hôtellerie, restauration, tourisme, commerce, transport, administration, santé...) ?</li><li>Êtes-vous à l'aise avec la gestion des réclamations ou des clients mécontents, et capable de trouver des solutions ?</li><li>L'aspect relationnel direct avec une clientèle variée est-il un moteur essentiel pour vous ?</li></ol></div>
             <p class="mt-6"><strong>Point Clé :</strong> Les métiers d'accueil et de service demandent d'excellentes qualités relationnelles, une présentation soignée, une bonne gestion du stress, et souvent une capacité à travailler en équipe et avec des horaires flexibles.</p>
             <div class="quote-box"><p>"Le client est roi, mais le royaume a besoin d'un bon serviteur pour prospérer."</p><cite>— (Adaptation d'adage)</cite></div>
             <p class="source"><em>Inspirations : Hôte/hôtesse d'accueil, serveur, réceptionniste, vendeur, agent de voyages, personnel navigant...</em></p>
@@ -3114,7 +3207,7 @@
                 </ul>
             </div>
             <p><strong>Concept :</strong> Cet intérêt est lié au désir d'explorer, de s'ouvrir à d'autres cultures, d'apprendre par l'expérience du voyage et de l'immersion. Il peut s'agir de métiers impliquant des déplacements fréquents, des missions à l'étranger, ou un travail dans le secteur du tourisme ou des relations internationales.</p>
-            <div class="explanation-section"><h4>Pistes de réflexion :</h4><ol><li>Quel type de voyage professionnel vous attire : missions courtes et fréquentes, expatriation de longue durée, travail saisonnier à l'étranger, accompagnement de groupes ?</li><li>Êtes-vous à l'aise avec la logistique des voyages (transports, hébergements, formalités) et la nécessité de vous adapter rapidement à des contextes changeants ?</li><li>Comment concilieriez-vous une vie professionnelle nomade avec vos attaches personnelles et familiales ?</li></ol></div>
+            <div class="explanation-section"><h4>Pistes de Réflexion :</h4><ol><li>Quel type de voyage professionnel vous attire : missions courtes et fréquentes, expatriation de longue durée, travail saisonnier à l'étranger, accompagnement de groupes ?</li><li>Êtes-vous à l'aise avec la logistique des voyages (transports, hébergements, formalités) et la nécessité de vous adapter rapidement à des contextes changeants ?</li><li>Comment concilieriez-vous une vie professionnelle nomade avec vos attaches personnelles et familiales ?</li></ol></div>
             <p class="mt-6"><strong>Point Clé :</strong> Les métiers liés au voyage demandent une grande autonomie, de l'adaptabilité, une ouverture d'esprit, souvent la maîtrise de langues étrangères, et une bonne gestion du stress lié aux déplacements.</p>
             <div class="quote-box"><p>"Voyager, c'est naître et mourir à chaque instant."</p><cite>— Victor Hugo</cite></div>
             <p class="source"><em>Inspirations : Personnel navigant, guide touristique, commercial international, diplomate, reporter, humanitaire...</em></p>
@@ -3211,7 +3304,7 @@
                 </ul>
             </div>
             <p><strong>Concept :</strong> Cet intérêt est moteur de progrès dans tous les domaines. Il implique une démarche intellectuelle rigoureuse, une capacité à questionner l'existant, à formuler des hypothèses, à mener des investigations ou des expérimentations, et à synthétiser des résultats pour créer de nouvelles connaissances ou applications.</p>
-            <div class="explanation-section"><h4>Pistes de réflexion :</h4><ol><li>Dans quel domaine aimeriez-vous mener des recherches ou innover (scientifique, technologique, social, artistique, économique...) ?</li><li>Êtes-vous à l'aise avec un travail qui peut être long, parfois incertain, et qui demande une grande autonomie intellectuelle ?</li><li>La collaboration avec d'autres chercheurs ou innovateurs, ainsi que la diffusion des résultats (publications, brevets, conférences) sont-elles des aspects qui vous motivent ?</li></ol></div>
+            <div class="explanation-section"><h4>Pistes de Réflexion :</h4><ol><li>Dans quel domaine aimeriez-vous mener des recherches ou innover (scientifique, technologique, social, artistique, économique...) ?</li><li>Êtes-vous à l'aise avec un travail qui peut être long, parfois incertain, et qui demande une grande autonomie intellectuelle ?</li><li>La collaboration avec d'autres chercheurs ou innovateurs, ainsi que la diffusion des résultats (publications, brevets, conférences) sont-elles des aspects qui vous motivent ?</li></ol></div>
             <p class="mt-6"><strong>Point Clé :</strong> Les métiers de la recherche et de l'innovation demandent une forte curiosité, un esprit critique et analytique, de la persévérance, de la créativité et souvent une expertise pointue dans un domaine spécifique.</p>
             <div class="quote-box"><p>"L'important est de ne jamais cesser de questionner."</p><cite>— Albert Einstein</cite></div>
             <p class="source"><em>Inspirations : Chercheur, ingénieur R&D, consultant en innovation, analyste de tendances, entrepreneur innovant...</em></p>
@@ -3441,7 +3534,7 @@
          <div class="column-content" style="padding-top:15px;"> 
             <h2 style="margin-top:0;">Visualiseur de Fiche Métierscope</h2>
              <div id="app-iframe-viewer">
-                <div class="iframe-placeholder-app">
+                <div class="iframe-placeholder-app" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; height:100%;">
                     <i class="fas fa-file-import fa-3x" style="color: #adb5bd; margin-bottom: 15px;"></i>
                     <p>L'URL chargée s'affichera ici.<br>Utilisez le panneau de gauche pour charger une fiche.</p>
                     <p style="margin-top:15px; font-size:0.85em; color: #dc3545;"><i class="fas fa-exclamation-triangle mr-1"></i> Si la page reste blanche ou affiche une erreur, le site source (Métierscope) bloque son affichage direct ici.
@@ -3453,6 +3546,37 @@
     </div>
 </div>
 <!-- ==================== FIN SECTION GESTIONNAIRE FICHES MÉTIERSCOPE ==================== -->
+
+<!-- ==================== NOUVELLE SECTION : SYNTHÈSE PAR L'IA (GEMINI) ==================== -->
+<div class="day-row" id="section-gemini-synthesis" data-day-label="Synthèse IA">
+    <div class="column column-left" style="background-color: var(--content-bg);">
+        <div class="column-content">
+            <h2>Synthèse & Pistes Métiers par l'IA (Gemini)</h2>
+            <div class="emotion-tag" style="background-image: linear-gradient(to right, #8b5cf6, #c084fc); color: white;">Analyse Augmentée</div>
+            <p>Utilisez la puissance de l'intelligence artificielle pour obtenir un bilan personnalisé. Cette section génère un "prompt" détaillé basé sur toutes vos réponses. Vous pourrez ensuite le copier et le coller dans une IA comme Gemini pour une analyse approfondie.</p>
+            <ol class="explanation-section" style="padding: 15px; margin: 1.5rem 0;">
+                <li>Cliquez sur <strong>"Générer mon Prompt Personnalisé"</strong> pour créer l'instruction pour l'IA.</li>
+                <li>Cliquez sur <strong>"Copier le Prompt"</strong> pour le mettre dans votre presse-papiers.</li>
+                <li>Cliquez sur <strong>"Ouvrir Gemini"</strong>, collez le prompt (Ctrl+V ou Cmd+V) et lancez la discussion.</li>
+            </ol>
+            <button id="generate-prompt-btn" class="summary-action-btn"><i class="fas fa-cogs mr-2"></i>Générer mon Prompt Personnalisé</button>
+        </div>
+    </div>
+    <div class="column column-right">
+        <div class="column-content">
+            <h2>Votre Prompt pour l'IA</h2>
+            <textarea id="gemini-prompt-output" readonly placeholder="Votre prompt personnalisé apparaîtra ici après avoir cliqué sur le bouton de génération..."></textarea>
+            <div class="gemini-buttons">
+                <button id="copy-prompt-btn" class="summary-action-btn" disabled><i class="fas fa-copy mr-2"></i>Copier le Prompt</button>
+                <a href="https://gemini.google.com/app" target="_blank" id="open-gemini-btn" rel="noopener noreferrer">
+                    <i class="fas fa-external-link-alt mr-2"></i>Ouvrir Gemini
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ==================== FIN NOUVELLE SECTION ==================== -->
+
     </div> <!-- Fin .container -->
 
     <!-- Structure Modale Audio -->
@@ -3468,359 +3592,592 @@
             </div>
         </div>
     </div>
+<input type="file" id="file-input" accept=".json" style="display: none;">
+
 <!-- ========== FIN PARTIE MODAL AUDIO ========== -->
-    <script>
-        // ========== PARTIE JAVASCRIPT (V5 AVEC GESTIONNAIRE FICHES INTÉGRÉ COMME DAY-ROW) ==========
-        document.addEventListener('DOMContentLoaded', () => {
-            const APP_STORAGE_KEY = 'interetsMetierscopeExplo_v5_FichesIntegre'; 
-            const infoBox = document.getElementById('info-box');
-            const notesContainer = document.getElementById('notes-container');
-            const moodButtons = document.querySelectorAll('.mood-btn');
-            const userNotes = document.getElementById('user-notes');
-            const saveNotesButton = document.getElementById('save-notes-button');
-            const loadNotesButton = document.getElementById('load-notes-button');
-            const saveFeedback = document.getElementById('save-feedback');
-            const loadImageButtons = document.querySelectorAll('.load-image-btn');
-            const audioModal = document.getElementById('audio-modal');
-            const modalTitleElem = document.getElementById('modal-title');
-            const closeModalButton = document.querySelector('.close-modal');
-            const audioPlaceholderText = document.getElementById('audio-placeholder-text');
-            const navLinks = document.querySelectorAll('#nav-bar a[href^="#interet-"], #nav-bar a[href^="#section-"]'); 
-            const sections = document.querySelectorAll('.day-row'); // Toutes les sections .day-row
-            const navBarElem = document.getElementById('nav-bar');
-            let navBarHeight = navBarElem ? navBarElem.offsetHeight : 70;
-            let lastKnownScrollPosition = 0; let ticking = false;
 
-            const generateSummaryButton = document.getElementById('generate-summary-button');
-            const summaryResultsArea = document.getElementById('summary-results-area');
-            const categoryScoresContainer = document.getElementById('category-scores-container');
-            const analysisTextElement = document.getElementById('analysis-text');
-            const printSummaryButton = document.getElementById('print-summary-button');
-            const pdfSummaryButton = document.getElementById('pdf-summary-button');
+<script>
+    // ========== PARTIE JAVASCRIPT COMPLET AVEC GESTION DE DONNÉES AVANCÉE ==========
+    document.addEventListener('DOMContentLoaded', () => {
+        const APP_STORAGE_KEY = 'interetsMetierscopeExplo_v9_DataManagement';
+        // ... (Le reste du JavaScript est identique à la version A9 B, incluant la logique pour Gemini)
+        // Pour être sûr, je colle l'intégralité du script ci-dessous.
+        
+        const infoBox = document.getElementById('info-box');
+        const notesContainer = document.getElementById('notes-container');
+        const moodButtons = document.querySelectorAll('.mood-btn');
+        const userNotes = document.getElementById('user-notes');
+        
+        const saveNotesButton = document.getElementById('save-notes-button');
+        const loadNotesButton = document.getElementById('load-notes-button');
+        const exportDataButton = document.getElementById('export-data-button');
+        const exportHtmlButton = document.getElementById('export-html-button');
+        const importDataButton = document.getElementById('import-data-button');
+        const resetAppButton = document.getElementById('reset-app-button');
+        const fileInput = document.getElementById('file-input');
+        const saveFeedback = document.getElementById('save-feedback');
+        
+        const loadImageButtons = document.querySelectorAll('.load-image-btn');
+        const audioModal = document.getElementById('audio-modal');
+        const modalTitleElem = document.getElementById('modal-title');
+        const closeModalButton = document.querySelector('.close-modal');
+        const audioPlaceholderText = document.getElementById('audio-placeholder-text');
+        const navLinks = document.querySelectorAll('#nav-bar a[href^="#interet-"], #nav-bar a[href^="#section-"]'); 
+        const sections = document.querySelectorAll('.day-row');
+        const navBarElem = document.getElementById('nav-bar');
+        let navBarHeight = navBarElem ? navBarElem.offsetHeight : 70;
+        
+        const topUserNomInput = document.getElementById('top-user-nom');
+        const topUserPrenomInput = document.getElementById('top-user-prenom');
+        const mainUserIdentifier = document.getElementById('main-user-identifier');
 
-            const generateInterestChartButton = document.getElementById('generate-interest-chart-button');
-            const interestChartContainer = document.getElementById('interest-profile-chart-container');
-            const interestChartCanvas = document.getElementById('interestProfileChart');
-            const interestChartFeedback = document.getElementById('interest-chart-feedback');
-            let interestProfileChartInstance = null;
+        const generateSummaryButton = document.getElementById('generate-summary-button');
+        const summaryResultsArea = document.getElementById('summary-results-area');
+        const categoryScoresContainer = document.getElementById('category-scores-container');
+        const analysisTextElement = document.getElementById('analysis-text');
+        const printSummaryButton = document.getElementById('print-summary-button');
+        const pdfSummaryButton = document.getElementById('pdf-summary-button');
 
-            // --- ÉLÉMENTS DOM POUR GESTIONNAIRE FICHES MÉTIERSCOPE ---
-            const currentFicheFormApp = document.getElementById('current-fiche-form-app');
-            const loadCurrentIframeBtnApp = document.getElementById('app-load-current-iframe-btn');
-            const metierscopeIframeApp = document.getElementById('app-metierscope-iframe');
-            const iframePlaceholderApp = document.querySelector('#section-fiches-metierscope .iframe-placeholder-app');
-            const iframeWarningApp = document.getElementById('app-iframe-warning');
+        const generateInterestChartButton = document.getElementById('generate-interest-chart-button');
+        const interestChartContainer = document.getElementById('interest-profile-chart-container');
+        const interestChartCanvas = document.getElementById('interestProfileChart');
+        const interestChartFeedback = document.getElementById('interest-chart-feedback');
+        let interestProfileChartInstance = null;
+        
+        // --- ÉLÉMENTS DOM POUR LA SECTION GEMINI ---
+        const generatePromptBtn = document.getElementById('generate-prompt-btn');
+        const copyPromptBtn = document.getElementById('copy-prompt-btn');
+        const geminiPromptOutput = document.getElementById('gemini-prompt-output');
+
+        // --- ÉLÉMENTS DOM POUR GESTIONNAIRE FICHES ---
+        const currentFicheFormApp = document.getElementById('current-fiche-form-app');
+        const loadCurrentIframeBtnApp = document.getElementById('app-load-current-iframe-btn');
+        const metierscopeIframeApp = document.getElementById('app-metierscope-iframe');
+        const iframePlaceholderApp = document.querySelector('#section-fiches-metierscope .iframe-placeholder-app');
+        const iframeWarningApp = document.getElementById('app-iframe-warning');
+        const currentNomMetierInputApp = document.getElementById('app-current-nom-metier');
+        const currentUrlMetierInputApp = document.getElementById('app-current-url-metier');
+        const currentNotesMetierTextareaApp = document.getElementById('app-current-notes-metier');
+        const currentFicheIdInputApp = document.getElementById('app-current-fiche-id');
+        const saveUpdateFicheBtnApp = document.getElementById('app-save-update-fiche-btn');
+        const clearFormBtnApp = document.getElementById('app-clear-form-btn');
+        const fichesListAppDiv = document.getElementById('app-fiches-list');
+
+        function getDefaultAppData() {
+            return {
+                userIdentifier: '',
+                notes: '',
+                mood: null,
+                questionnaireAnswers: {},
+                scores: {},
+                images: {},
+                metierscopeFiches: [] 
+            };
+        }
+        let appData = getDefaultAppData();
+
+        const interestCategoriesRIASEC = { 'Réaliste (R)': ['interet-1', 'interet-6', 'interet-7', 'interet-9', 'interet-16', 'interet-17', 'interet-22', 'interet-23'], 'Investigateur (I)': ['interet-2', 'interet-4', 'interet-30'], 'Artistique (A)': ['interet-5', 'interet-10', 'interet-20', 'interet-21'], 'Social (S)': ['interet-12', 'interet-13', 'interet-14', 'interet-19', 'interet-26', 'interet-27', 'interet-28'], 'Entreprenant (E)': ['interet-11', 'interet-15', 'interet-18', 'interet-24', 'interet-29'], 'Conventionnel (C)': ['interet-3', 'interet-8', 'interet-25'] };
+        const orderedInterestKeys = Array.from({ length: 30 }, (_, i) => `interet-${i + 1}`);
+        const interestLabelsForChartRIASEC = { 'interet-1': 'Nature/Anim. (R)', 'interet-2': 'Enquêtes (I)', 'interet-3': 'Manier Chiffres (C)', 'interet-4': 'Exp. Sci. (I)', 'interet-5': 'Animer (A)', 'interet-6': 'Plein Air (R)', 'interet-7': 'Construire (R)', 'interet-8': 'Organiser (C)', 'interet-9': 'Machines (R)', 'interet-10': 'Écrire (A)', 'interet-11': 'Vendre (E)', 'interet-12': 'Enfants (S)', 'interet-13': 'Soigner (S)', 'interet-14': 'Informer (S)', 'interet-15': 'Manager (E)', 'interet-16': 'Manuel Précis. (R)', 'interet-17': 'Conduire Véh. (R)', 'interet-18': 'Urgence (E)', 'interet-19': 'Enseigner (S)', 'interet-20': 'Dessiner (A)', 'interet-21': 'Créer (A)', 'interet-22': 'Cultiver (R)', 'interet-23': 'Réparer (R)', 'interet-24': 'Convaincre (E)', 'interet-25': 'Gérer Budget (C)', 'interet-26': 'Défendre (S)', 'interet-27': 'Protéger (S)', 'interet-28': 'Accueillir (S)', 'interet-29': 'Voyager (E)', 'interet-30': 'Rechercher (I)' };
+
+        
+        function showFeedback(message, isError = false, duration = 3000) { if (!saveFeedback) return; saveFeedback.textContent = message; saveFeedback.style.backgroundColor = isError ? '#f87171' : 'var(--secondary-color)'; saveFeedback.style.color = 'white'; saveFeedback.style.display = 'block'; requestAnimationFrame(() => { saveFeedback.style.opacity = '1'; }); setTimeout(() => { saveFeedback.style.opacity = '0'; setTimeout(() => { saveFeedback.style.display = 'none'; }, 300); }, duration); }
+        function getScorePercentage(score, numQuestions = 4) { if (typeof score !== 'number' || isNaN(score) || numQuestions <= 0) return 0; const minPossibleScore = numQuestions * 1; const maxPossibleScore = numQuestions * 5; if (maxPossibleScore === minPossibleScore) return 0; const percentage = ((score - minPossibleScore) / (maxPossibleScore - minPossibleScore)) * 100; return Math.max(0, Math.min(100, Math.round(percentage))); }
+        function updateSidebarVisibility() { const isDesktop = window.innerWidth >= 1250; if (infoBox && notesContainer) { infoBox.style.display = isDesktop ? 'flex' : 'none'; notesContainer.style.display = isDesktop ? 'flex' : 'none'; } const container = document.querySelector('.container'); if(container){ if (isDesktop) { container.style.marginLeft = `calc(var(--sidebar-left-width) + var(--sidebar-gap) + var(--content-sidebar-gap))`; container.style.marginRight = `calc(var(--sidebar-right-width) + var(--sidebar-gap) + var(--content-sidebar-gap))`; container.style.maxWidth = `calc(100% - (var(--sidebar-left-width) + var(--sidebar-right-width) + 2 * var(--sidebar-gap) + 2 * var(--content-sidebar-gap)))`; } else { container.style.marginLeft = 'auto'; container.style.marginRight = 'auto'; container.style.maxWidth = '100%'; if (window.innerWidth < 1250 && infoBox && notesContainer) { infoBox.style.display = 'flex'; notesContainer.style.display = 'flex'; infoBox.style.position = 'relative'; infoBox.style.top = 'auto'; infoBox.style.left = 'auto'; infoBox.style.width = 'calc(100% - 2rem)'; infoBox.style.margin = '1.5rem auto 1rem auto'; infoBox.style.maxHeight = 'none'; infoBox.style.overflowY = 'visible'; notesContainer.style.position = 'relative'; notesContainer.style.top = 'auto'; notesContainer.style.right = 'auto'; notesContainer.style.width = 'calc(100% - 2rem)'; notesContainer.style.margin = '1.5rem auto 1rem auto'; notesContainer.style.maxHeight = 'none'; notesContainer.style.overflowY = 'visible'; } } } }
+        
+        function updateInterestScore(interestKey) { const formId = `form-adherence-${interestKey}`; const form = document.getElementById(formId); if (!form) { return false; } const questions = form.querySelectorAll('.question'); if (questions.length === 0) { return false; } const numQuestions = questions.length; let totalScore = 0; let answeredQuestions = 0; let currentAnswers = {}; questions.forEach((question, index) => { const radioName = `q${index + 1}-${interestKey}`; const checkedRadio = form.querySelector(`input[name="${radioName}"]:checked`); if (checkedRadio) { const value = checkedRadio.value; currentAnswers[radioName] = value; totalScore += parseInt(value, 10); answeredQuestions++; } else { currentAnswers[radioName] = null;} }); appData.questionnaireAnswers[interestKey] = currentAnswers; if (answeredQuestions === numQuestions) { appData.scores[interestKey] = totalScore; const percentage = getScorePercentage(totalScore, numQuestions); updateResultsDisplay(interestKey, percentage, totalScore, numQuestions); return true; } else { delete appData.scores[interestKey]; const resultsContainer = document.getElementById(`results-${interestKey}`); if (resultsContainer) resultsContainer.style.display = 'none'; return false; } }
+        function updateResultsDisplay(interestKey, percentage, score, numQuestions) { const resultsContainer = document.getElementById(`results-${interestKey}`); const resultBar = document.getElementById(`result-bar-${interestKey}`); const resultText = document.getElementById(`result-text-${interestKey}`); const interestTitleElement = document.querySelector(`#${interestKey} h2`); const interestName = interestTitleElement ? interestTitleElement.textContent.split('<small>')[0].trim() : `Intérêt ${interestKey.split('-')[1]}`; if (resultsContainer && resultBar && resultText) { resultsContainer.querySelector('h4').textContent = `Votre Adhésion : ${interestName}`; resultBar.style.width = `${percentage}%`; let feedbackText = `Score : ${score}/${numQuestions * 5} (${percentage}%). `; if (percentage >= 80) feedbackText += "Cet intérêt semble très fort chez vous."; else if (percentage >= 60) feedbackText += "Cet intérêt est plutôt marqué."; else if (percentage >= 40) feedbackText += "Votre intérêt est modéré."; else if (percentage >= 20) feedbackText += "Cet intérêt semble plutôt faible."; else feedbackText += "Cet intérêt semble peu marqué."; resultText.textContent = feedbackText; resultsContainer.style.display = 'block'; } }
+        
+        function loadImage(inputElement, previewImg) { const url = inputElement.value.trim(); const wrapper = previewImg.parentElement; wrapper.classList.remove('error', 'empty'); previewImg.src = ''; previewImg.alt = ''; if (!url) { wrapper.classList.add('empty'); return; } if (!url.match(/^https?:\/\/.+\..+/)) { wrapper.classList.add('error'); previewImg.alt = 'URL invalide'; return; } previewImg.onload = () => { wrapper.classList.remove('empty', 'error'); previewImg.alt = `Aperçu ${inputElement.id}`; }; previewImg.onerror = () => { wrapper.classList.add('error'); previewImg.alt = 'Erreur chargement image'; }; previewImg.src = url; }
+        
+        function updateNavHighlight() { let index = sections.length; while(--index && window.scrollY + navBarHeight + 50 < sections[index].offsetTop) {} navLinks.forEach((link) => link.classList.remove('active')); if (index >= 0 && index < sections.length) { const activeSectionId = sections[index].id; const activeLink = document.querySelector(`#nav-bar a[href="#${activeSectionId}"]`); if (activeLink) { activeLink.classList.add('active'); } } }
+        
+        function generateSummary() { if (!appData) { showFeedback('Données de l\'application non initialisées.', true); return; } const calculatedScores = appData.scores || {}; const riasecScores = {}; let totalInterestsWithScores = 0; for (const typeRIASEC in interestCategoriesRIASEC) { let typeScoreSum = 0; let interestsInTypeCount = 0; interestCategoriesRIASEC[typeRIASEC].forEach(interestKey => { if (calculatedScores[interestKey] !== undefined) { const form = document.getElementById(`form-adherence-${interestKey}`); const numQuestions = form ? form.querySelectorAll('.question').length : 4; typeScoreSum += getScorePercentage(calculatedScores[interestKey], numQuestions); interestsInTypeCount++; totalInterestsWithScores++; } }); riasecScores[typeRIASEC] = interestsInTypeCount > 0 ? Math.round(typeScoreSum / interestsInTypeCount) : 0; } categoryScoresContainer.innerHTML = ''; if (totalInterestsWithScores === 0) { categoryScoresContainer.innerHTML = '<p class="text-center text-gray-500 italic">Aucun score calculé. Complétez les questionnaires et cliquez sur "Voir mon Adhésion" ou chargez vos données.</p>'; } else { Object.keys(riasecScores).forEach(typeRIASEC => { const average = riasecScores[typeRIASEC]; const itemHTML = ` <div class="category-score-item"> <strong>${typeRIASEC}</strong> <div class="graph-bar-container"> <div class="graph-bar" style="width: ${average}%; background-color: ${getRIASECColor(typeRIASEC, average / 100)};"></div> </div> <p>${average}% d'adhésion moyenne</p> </div>`; categoryScoresContainer.innerHTML += itemHTML; }); } generateAnalysisTextForRIASEC(riasecScores); summaryResultsArea.style.display = 'block'; }
+        function getRIASECColor(typeRIASEC, intensity = 0.7) { const colors = { 'Réaliste (R)': `rgba(34, 139, 34, ${intensity})`, 'Investigateur (I)': `rgba(0, 0, 139, ${intensity})`, 'Artistique (A)': `rgba(255, 0, 0, ${intensity})`, 'Social (S)': `rgba(255, 165, 0, ${intensity})`, 'Entreprenant (E)': `rgba(255, 215, 0, ${intensity})`, 'Conventionnel (C)': `rgba(160, 160, 160, ${intensity})` }; return colors[typeRIASEC] || `rgba(107, 114, 128, ${intensity})`; }
+        function generateAnalysisTextForRIASEC(riasecScores) { if (!analysisTextElement) return; let analysis = "Votre profil d'intérêts selon la typologie RIASEC suggère :<br>"; const sortedTypes = Object.entries(riasecScores).sort(([,a],[,b]) => b-a); if (sortedTypes.length === 0 || sortedTypes.every(type => type[1] === 0)) { analysisTextElement.innerHTML = "Complétez les questionnaires pour obtenir une analyse de vos intérêts RIASEC."; return; } const topType = sortedTypes[0][0]; const topScore = sortedTypes[0][1]; if (topScore >= 70) { analysis += `<li>Un profil <strong>très marqué</strong> pour le type <strong>${topType}</strong> (${topScore}%). C'est votre orientation principale.</li>`; } else if (topScore >= 55) { analysis += `<li>Un profil <strong>notable</strong> pour le type <strong>${topType}</strong> (${topScore}%). Cette orientation est significative.</li>`; } else if (topScore >= 40) { analysis += `<li>Un profil <strong>modéré</strong> pour le type <strong>${topType}</strong> (${topScore}%). À explorer en combinaison avec d'autres.</li>`; } else if (topScore > 0) { analysis += `<li>Vos types RIASEC principaux ne se dégagent pas fortement pour l'instant (score max: ${topScore}% pour ${topType}). Consultez le Profil Radar pour affiner.</li>`; } else { analysis += `<li>Aucun type RIASEC ne se dégage. Complétez davantage de questionnaires ou revoyez vos réponses.</li>`; } if (sortedTypes.length > 1 && topScore > 0) { const secondType = sortedTypes[1][0]; const secondScore = sortedTypes[1][1]; if (secondScore >= 50) { analysis += `<li>Le type <strong>${secondType}</strong> (${secondScore}%) ressort également. Votre code RIASEC pourrait être ${topType.substring(0,1)}${secondType.substring(0,1)}.</li>`; if (sortedTypes.length > 2) { const thirdType = sortedTypes[2][0]; const thirdScore = sortedTypes[2][1]; if (thirdScore >= 45) { analysis += `<li>Et possiblement le type <strong>${thirdType}</strong> (${thirdScore}%) en troisième position, formant un code ${topType.substring(0,1)}${secondType.substring(0,1)}${thirdType.substring(0,1)}.</li>`; } } } } analysis += "<br>Utilisez ces indications pour cibler votre recherche sur Métierscope et consultez les conseils de la section 'Comprendre votre profil RIASEC'."; analysisTextElement.innerHTML = `<ul>${analysis}</ul>`; }
+        
+        function generateInterestProfileChart() { if (!appData || !appData.scores || Object.keys(appData.scores).length === 0) { interestChartFeedback.textContent = 'Aucun score disponible. Complétez les questionnaires et cliquez sur "Voir mon Adhésion" ou chargez vos données.'; interestChartFeedback.style.display = 'block'; interestChartContainer.style.display = 'none'; return; } const chartLabels = orderedInterestKeys.map(key => interestLabelsForChartRIASEC[key] || key.replace('interet-', 'I')); const chartData = orderedInterestKeys.map(key => { if (appData.scores[key] !== undefined) { const form = document.getElementById(`form-adherence-${key}`); const numQuestions = form ? form.querySelectorAll('.question').length : 4; return getScorePercentage(appData.scores[key], numQuestions); } return 0; }); interestChartFeedback.style.display = 'none'; interestChartContainer.style.display = 'block'; if (interestProfileChartInstance) { interestProfileChartInstance.destroy(); } interestProfileChartInstance = new Chart(interestChartCanvas, { type: 'radar', data: { labels: chartLabels, datasets: [{ label: 'Adhésion aux Intérêts (%)', data: chartData, fill: true, backgroundColor: 'rgba(13, 148, 136, 0.2)', borderColor: 'rgb(13, 148, 136)', pointBackgroundColor: 'rgb(13, 148, 136)', pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: 'rgb(13, 148, 136)' }] }, options: { responsive: true, maintainAspectRatio: false, scales: { r: { beginAtZero: true, max: 100, min: 0, ticks: { stepSize: 20, backdropColor: 'rgba(255, 255, 255, 0.75)' }, pointLabels: { font: { size: 9 } }, grid: { color: 'rgba(0, 0, 0, 0.1)' } }}, plugins: { legend: { display: false }, title: { display: true, text: 'Profil d\'Adhésion aux Intérêts Individuels (RIASEC)' }, tooltip: { callbacks: { label: function(context) { return `${context.dataset.label || ''}: ${context.parsed.r}%`; }}}} } }); }
+        
+        // --- GESTION DE DONNÉES (Collecte, Affichage, Sauvegarde) ---
+        function updateAppDataFromUI() {
+            appData.userIdentifier = `${topUserNomInput.value.trim()}_${topUserPrenomInput.value.trim()}`;
+            appData.notes = userNotes.value;
+            const selectedMood = document.querySelector('.mood-btn.selected');
+            appData.mood = selectedMood ? selectedMood.dataset.mood : null;
             
-            const currentNomMetierInputApp = document.getElementById('app-current-nom-metier');
-            const currentUrlMetierInputApp = document.getElementById('app-current-url-metier');
-            const currentNotesMetierTextareaApp = document.getElementById('app-current-notes-metier');
-            const currentFicheIdInputApp = document.getElementById('app-current-fiche-id');
-            const saveUpdateFicheBtnApp = document.getElementById('app-save-update-fiche-btn');
-            const clearFormBtnApp = document.getElementById('app-clear-form-btn');
-            const fichesListAppDiv = document.getElementById('app-fiches-list');
+            appData.images = appData.images || {};
+            document.querySelectorAll('.image-url-input').forEach(input => {
+                 appData.images[input.id] = input.value; 
+            });
 
-            let appData = {}; 
+            orderedInterestKeys.forEach(interestKey => {
+                updateInterestScore(interestKey); 
+            });
+        }
 
-            function getDefaultAppData() {
-                 return {
-                    notes: '',
-                    mood: null,
-                    questionnaireAnswers: {},
-                    scores: {},
-                    images: {},
-                    metierscopeFiches: [] 
-                };
-            }
-            appData = getDefaultAppData(); 
+        function renderDataToUI(data) {
+            appData = { ...getDefaultAppData(), ...data };
 
-            const interestCategoriesRIASEC = { 'Réaliste (R)': ['interet-1', 'interet-6', 'interet-7', 'interet-9', 'interet-16', 'interet-17', 'interet-22', 'interet-23'], 'Investigateur (I)': ['interet-2', 'interet-4', 'interet-30'], 'Artistique (A)': ['interet-5', 'interet-10', 'interet-20', 'interet-21'], 'Social (S)': ['interet-12', 'interet-13', 'interet-14', 'interet-19', 'interet-26', 'interet-27', 'interet-28'], 'Entreprenant (E)': ['interet-11', 'interet-15', 'interet-18', 'interet-24', 'interet-29'], 'Conventionnel (C)': ['interet-3', 'interet-8', 'interet-25'] };
-            const orderedInterestKeys = Array.from({ length: 30 }, (_, i) => `interet-${i + 1}`);
-            const interestLabelsForChartRIASEC = { 'interet-1': 'Nature/Anim. (R)', 'interet-2': 'Enquêtes (I)', 'interet-3': 'Manier Chiffres (C)', 'interet-4': 'Exp. Sci. (I)', 'interet-5': 'Animer (A)', 'interet-6': 'Plein Air (R)', 'interet-7': 'Construire (R)', 'interet-8': 'Organiser (C)', 'interet-9': 'Machines (R)', 'interet-10': 'Écrire (A)', 'interet-11': 'Vendre (E)', 'interet-12': 'Enfants (S)', 'interet-13': 'Soigner (S)', 'interet-14': 'Informer (S)', 'interet-15': 'Manager (E)', 'interet-16': 'Manuel Précis. (R)', 'interet-17': 'Conduire Véh. (R)', 'interet-18': 'Urgence (E)', 'interet-19': 'Enseigner (S)', 'interet-20': 'Dessiner (A)', 'interet-21': 'Créer (A)', 'interet-22': 'Cultiver (R)', 'interet-23': 'Réparer (R)', 'interet-24': 'Convaincre (E)', 'interet-25': 'Gérer Budget (C)', 'interet-26': 'Défendre (S)', 'interet-27': 'Protéger (S)', 'interet-28': 'Accueillir (S)', 'interet-29': 'Voyager (E)', 'interet-30': 'Rechercher (I)' };
+            const identifierParts = (appData.userIdentifier || '_').split('_');
+            topUserNomInput.value = identifierParts[0] || '';
+            topUserPrenomInput.value = identifierParts[1] || '';
+            updateUserIdentifier();
 
-            function showFeedback(message, isError = false, duration = 3000) { if (!saveFeedback) return; saveFeedback.textContent = message; saveFeedback.style.backgroundColor = isError ? '#f87171' : 'var(--secondary-color)'; saveFeedback.style.color = 'white'; saveFeedback.style.display = 'block'; requestAnimationFrame(() => { saveFeedback.style.opacity = '1'; }); setTimeout(() => { saveFeedback.style.opacity = '0'; setTimeout(() => { saveFeedback.style.display = 'none'; }, 300); }, duration); }
-            function getScorePercentage(score, numQuestions = 4) { if (typeof score !== 'number' || isNaN(score) || numQuestions <= 0) return 0; const minPossibleScore = numQuestions * 1; const maxPossibleScore = numQuestions * 5; if (maxPossibleScore === minPossibleScore) return 0; const percentage = ((score - minPossibleScore) / (maxPossibleScore - minPossibleScore)) * 100; return Math.max(0, Math.min(100, Math.round(percentage))); }
-            function updateSidebarVisibility() { const isDesktop = window.innerWidth >= 1250; if (infoBox && notesContainer) { infoBox.style.display = isDesktop ? 'flex' : 'none'; notesContainer.style.display = isDesktop ? 'flex' : 'none'; } const container = document.querySelector('.container'); if(container){ if (isDesktop) { container.style.marginLeft = `calc(var(--sidebar-left-width) + var(--sidebar-gap) + var(--content-sidebar-gap))`; container.style.marginRight = `calc(var(--sidebar-right-width) + var(--sidebar-gap) + var(--content-sidebar-gap))`; container.style.maxWidth = `calc(100% - (var(--sidebar-left-width) + var(--sidebar-right-width) + 2 * var(--sidebar-gap) + 2 * var(--content-sidebar-gap)))`; } else { container.style.marginLeft = 'auto'; container.style.marginRight = 'auto'; container.style.maxWidth = '100%'; if (window.innerWidth < 1250 && infoBox && notesContainer) { infoBox.style.display = 'flex'; notesContainer.style.display = 'flex'; infoBox.style.position = 'relative'; infoBox.style.top = 'auto'; infoBox.style.left = 'auto'; infoBox.style.width = 'calc(100% - 2rem)'; infoBox.style.margin = '1.5rem auto 1rem auto'; infoBox.style.maxHeight = 'none'; infoBox.style.overflowY = 'visible'; notesContainer.style.position = 'relative'; notesContainer.style.top = 'auto'; notesContainer.style.right = 'auto'; notesContainer.style.width = 'calc(100% - 2rem)'; notesContainer.style.margin = '1.5rem auto 1rem auto'; notesContainer.style.maxHeight = 'none'; notesContainer.style.overflowY = 'visible'; } } } }
-            updateSidebarVisibility(); window.addEventListener('resize', updateSidebarVisibility);
-            function updateInterestScore(interestKey) { const formId = `form-adherence-${interestKey}`; const form = document.getElementById(formId); if (!form) { return false; } const questions = form.querySelectorAll('.question'); if (questions.length === 0) { return false; } const numQuestions = questions.length; let totalScore = 0; let answeredQuestions = 0; let currentAnswers = {}; questions.forEach((question, index) => { const radioName = `q${index + 1}-${interestKey}`; const checkedRadio = form.querySelector(`input[name="${radioName}"]:checked`); if (checkedRadio) { const value = checkedRadio.value; currentAnswers[radioName] = value; totalScore += parseInt(value, 10); answeredQuestions++; } else { currentAnswers[radioName] = null;} }); appData.questionnaireAnswers[interestKey] = currentAnswers; if (answeredQuestions === numQuestions) { appData.scores[interestKey] = totalScore; const percentage = getScorePercentage(totalScore, numQuestions); updateResultsDisplay(interestKey, percentage, totalScore, numQuestions); return true; } else { delete appData.scores[interestKey]; const resultsContainer = document.getElementById(`results-${interestKey}`); if (resultsContainer) resultsContainer.style.display = 'none'; return false; } }
-            function updateResultsDisplay(interestKey, percentage, score, numQuestions) { const resultsContainer = document.getElementById(`results-${interestKey}`); const resultBar = document.getElementById(`result-bar-${interestKey}`); const resultText = document.getElementById(`result-text-${interestKey}`); const interestTitleElement = document.querySelector(`#${interestKey} h2`); const interestName = interestTitleElement ? interestTitleElement.textContent.split('<small>')[0].trim() : `Intérêt ${interestKey.split('-')[1]}`; if (resultsContainer && resultBar && resultText) { resultsContainer.querySelector('h4').textContent = `Votre Adhésion : ${interestName}`; resultBar.style.width = `${percentage}%`; let feedbackText = `Score : ${score}/${numQuestions * 5} (${percentage}%). `; if (percentage >= 80) feedbackText += "Cet intérêt semble très fort chez vous."; else if (percentage >= 60) feedbackText += "Cet intérêt est plutôt marqué."; else if (percentage >= 40) feedbackText += "Votre intérêt est modéré."; else if (percentage >= 20) feedbackText += "Cet intérêt semble plutôt faible."; else feedbackText += "Cet intérêt semble peu marqué."; resultText.textContent = feedbackText; resultsContainer.style.display = 'block'; } }
-            document.querySelectorAll('.adherence-submit-btn').forEach(button => { button.addEventListener('click', () => { const interestKey = button.dataset.day; const form = document.getElementById(`form-adherence-${interestKey}`); if (!form) { return; } if (!updateInterestScore(interestKey)) { showFeedback(`Veuillez répondre à toutes les questions pour l'intérêt "${document.querySelector('#'+interestKey+' h2').textContent.split('<small>')[0].trim()}" pour voir le résultat.`, true, 4000); } form.querySelectorAll('label').forEach(lbl => lbl.classList.remove('checked-label')); form.querySelectorAll('input[type="radio"]:checked').forEach(radio => { radio.closest('label').classList.add('checked-label'); }); }); });
-            document.querySelectorAll('form[id^="form-adherence-interet-"]').forEach(form => { form.addEventListener('change', (event) => { if (event.target.type === 'radio') { const interestKey = form.id.replace('form-adherence-', ''); const radioName = event.target.name; const value = event.target.value; if (!appData.questionnaireAnswers[interestKey]) { appData.questionnaireAnswers[interestKey] = {}; } appData.questionnaireAnswers[interestKey][radioName] = value; form.querySelectorAll(`label > input[name="${radioName}"]`).forEach(radioInGroup => { radioInGroup.closest('label').classList.remove('checked-label'); }); event.target.closest('label').classList.add('checked-label'); const resultsContainer = document.getElementById(`results-${interestKey}`); if (resultsContainer) resultsContainer.style.display = 'none'; delete appData.scores[interestKey]; } }); });
+            userNotes.value = appData.notes || '';
+            moodButtons.forEach(btn => btn.classList.remove('selected'));
+            if (appData.mood) { document.querySelector(`.mood-btn[data-mood="${appData.mood}"]`)?.classList.add('selected');}
 
-            function saveData() { try { appData.scores = {}; orderedInterestKeys.forEach(interestKey => { const form = document.getElementById(`form-adherence-${interestKey}`); if (form) { const questions = form.querySelectorAll('.question'); const numQuestions = questions.length; let score = 0; let answered = 0; appData.questionnaireAnswers[interestKey] = appData.questionnaireAnswers[interestKey] || {}; questions.forEach((q, index) => { const radioName = `q${index + 1}-${interestKey}`; const checkedRadio = form.querySelector(`input[name="${radioName}"]:checked`); appData.questionnaireAnswers[interestKey][radioName] = checkedRadio ? checkedRadio.value : null; if (checkedRadio) { score += parseInt(checkedRadio.value, 10); answered++; } }); if (answered === numQuestions && numQuestions > 0) { appData.scores[interestKey] = score; } } }); appData.notes = userNotes.value; const selectedMood = document.querySelector('.mood-btn.selected'); appData.mood = selectedMood ? selectedMood.dataset.mood : null; appData.images = {}; document.querySelectorAll('.image-url-input').forEach(input => { appData.images[input.id] = input.value; }); localStorage.setItem(APP_STORAGE_KEY, JSON.stringify(appData)); showFeedback('Toutes les données ont été sauvegardées avec succès !'); } catch (error) { console.error('Erreur lors de la sauvegarde des données:', error); showFeedback('Erreur lors de la sauvegarde des données.', true); } }
-            function loadData() { const savedData = localStorage.getItem(APP_STORAGE_KEY); if (savedData) { try { const parsedData = JSON.parse(savedData); appData = { ...getDefaultAppData(), ...parsedData }; appData.questionnaireAnswers = appData.questionnaireAnswers || {}; appData.scores = appData.scores || {}; appData.images = appData.images || {}; appData.metierscopeFiches = parsedData.metierscopeFiches || []; userNotes.value = appData.notes || ''; moodButtons.forEach(btn => btn.classList.remove('selected')); if (appData.mood) { const selectedBtn = document.querySelector(`.mood-btn[data-mood="${appData.mood}"]`); if (selectedBtn) selectedBtn.classList.add('selected');} orderedInterestKeys.forEach(interestKey => { const form = document.getElementById(`form-adherence-${interestKey}`); const interestAnswers = appData.questionnaireAnswers[interestKey]; const resultsContainer = document.getElementById(`results-${interestKey}`); let score = 0; let numQuestions = 0; let allAnswered = true; if (form) { const questions = form.querySelectorAll('.question'); numQuestions = questions.length; form.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false); form.querySelectorAll('label').forEach(lbl => lbl.classList.remove('checked-label')); if (interestAnswers && numQuestions > 0) { questions.forEach((q, index) => { const radioName = `q${index + 1}-${interestKey}`; const savedValue = interestAnswers[radioName]; if (savedValue !== null && savedValue !== undefined) { const radioToCheck = form.querySelector(`input[name="${radioName}"][value="${savedValue}"]`); if (radioToCheck) { radioToCheck.checked = true; radioToCheck.closest('label').classList.add('checked-label'); score += parseInt(savedValue, 10); } else { allAnswered = false; } } else { allAnswered = false; } }); } else { allAnswered = false; } if (allAnswered && numQuestions > 0) { appData.scores[interestKey] = score; const percentage = getScorePercentage(score, numQuestions); updateResultsDisplay(interestKey, percentage, score, numQuestions); } else { delete appData.scores[interestKey]; if (resultsContainer) resultsContainer.style.display = 'none'; } } }); for (const inputId in appData.images) { if (appData.images.hasOwnProperty(inputId)) { const inputElement = document.getElementById(inputId); if (inputElement) { inputElement.value = appData.images[inputId] || ''; if (appData.images[inputId]) { const button = document.querySelector(`.load-image-btn[data-input="${inputId}"]`); if (button) { const previewId = button.dataset.preview; const previewImg = document.getElementById(previewId); if (previewImg) loadImage(inputElement, previewImg); } } else { const button = document.querySelector(`.load-image-btn[data-input="${inputId}"]`); if (button) { const previewId = button.dataset.preview; const previewImg = document.getElementById(previewId); const wrapper = previewImg ? previewImg.parentElement : null; if (previewImg) previewImg.src = ''; if (wrapper) { wrapper.classList.add('empty'); wrapper.classList.remove('error');} } } } } } renderMetierscopeFichesList(); showFeedback('Données chargées avec succès !'); if (Object.keys(appData.scores).length > 0) { generateSummary(); generateInterestProfileChart(); } else { if(summaryResultsArea) summaryResultsArea.style.display = 'none'; if(interestChartContainer) interestChartContainer.style.display = 'none'; } } catch (error) { console.error('Erreur lors du chargement ou parsing des données:', error); showFeedback('Erreur chargement. Réinitialisation.', true); appData = getDefaultAppData(); userNotes.value = ''; moodButtons.forEach(btn => btn.classList.remove('selected')); document.querySelectorAll('form[id^="form-adherence-interet-"]').forEach(form => { form.reset(); form.querySelectorAll('label').forEach(lbl => lbl.classList.remove('checked-label')); }); document.querySelectorAll('.results-container').forEach(el => el.style.display = 'none'); document.querySelectorAll('.image-url-input').forEach(ip => ip.value = ''); document.querySelectorAll('.image-preview').forEach(img => {img.src = ''; img.parentElement.classList.add('empty'); img.parentElement.classList.remove('error');}); if(summaryResultsArea) summaryResultsArea.style.display = 'none'; if(interestChartContainer) interestChartContainer.style.display = 'none'; renderMetierscopeFichesList(); }} else { showFeedback('Aucune donnée sauvegardée trouvée.', true); appData = getDefaultAppData(); userNotes.value = ''; moodButtons.forEach(btn => btn.classList.remove('selected')); document.querySelectorAll('form[id^="form-adherence-interet-"]').forEach(form => { form.reset(); form.querySelectorAll('label').forEach(lbl => lbl.classList.remove('checked-label')); }); document.querySelectorAll('.results-container').forEach(el => el.style.display = 'none'); document.querySelectorAll('.image-url-input').forEach(ip => ip.value = ''); document.querySelectorAll('.image-preview').forEach(img => {img.src = ''; img.parentElement.classList.add('empty'); img.parentElement.classList.remove('error');}); if(summaryResultsArea) summaryResultsArea.style.display = 'none'; if(interestChartContainer) interestChartContainer.style.display = 'none'; renderMetierscopeFichesList(); } }
+            appData.images = appData.images || {};
+            document.querySelectorAll('.image-url-input').forEach(input => {
+                if (appData.images[input.id]) {
+                    input.value = appData.images[input.id];
+                    const loadBtn = document.querySelector(`.load-image-btn[data-input="${input.id}"]`);
+                    if(loadBtn) loadBtn.click();
+                } else {
+                    input.value = '';
+                    const previewBtn = document.querySelector(`.load-image-btn[data-input="${input.id}"]`);
+                    if (previewBtn) {
+                        const previewImg = document.getElementById(previewBtn.dataset.preview);
+                        if (previewImg) { previewImg.src = ''; previewImg.parentElement.classList.add('empty'); }
+                    }
+                }
+            });
 
-            if (saveNotesButton) saveNotesButton.addEventListener('click', saveData);
-            if (loadNotesButton) loadNotesButton.addEventListener('click', loadData);
-            moodButtons.forEach(button => { button.addEventListener('click', () => { moodButtons.forEach(btn => btn.classList.remove('selected')); button.classList.add('selected'); appData.mood = button.dataset.mood; }); });
-            function loadImage(inputElement, previewImg) { const url = inputElement.value.trim(); const wrapper = previewImg.parentElement; wrapper.classList.remove('error', 'empty'); previewImg.src = ''; previewImg.alt = ''; if (!url) { wrapper.classList.add('empty'); return; } if (!url.match(/^https?:\/\/.+\..+/)) { wrapper.classList.add('error'); previewImg.alt = 'URL invalide'; return; } previewImg.onload = () => { wrapper.classList.remove('empty', 'error'); previewImg.alt = `Aperçu ${inputElement.id}`; }; previewImg.onerror = () => { wrapper.classList.add('error'); previewImg.alt = 'Erreur chargement image'; }; previewImg.src = url; }
-            loadImageButtons.forEach(button => { button.addEventListener('click', () => { const inputId = button.dataset.input; const previewId = button.dataset.preview; const inputElement = document.getElementById(inputId); const previewImg = document.getElementById(previewId); if (inputElement && previewImg) { loadImage(inputElement, previewImg); } }); });
-            document.querySelectorAll('.image-url-input').forEach(input => { input.addEventListener('input', () => { const button = document.querySelector(`.load-image-btn[data-input="${input.id}"]`); if(button){ const previewId = button.dataset.preview; const previewImg = document.getElementById(previewId); const previewWrapper = previewImg?.parentElement; if (previewWrapper) { previewWrapper.classList.remove('error'); if(!input.value.trim()){ previewWrapper.classList.add('empty'); if(previewImg) previewImg.src = ''; } else { previewWrapper.classList.remove('empty'); } } } }); });
-            document.querySelectorAll('.audio-button').forEach(button => { button.addEventListener('click', () => { const audioKey = button.dataset.audio; modalTitleElem.textContent = `Audio: ${audioKey}`; audioPlaceholderText.style.display = 'block'; audioModal.classList.add('show'); }); });
-            if (closeModalButton) { closeModalButton.addEventListener('click', () => audioModal.classList.remove('show')); }
-            if (audioModal) { audioModal.addEventListener('click', (event) => { if (event.target === audioModal) { audioModal.classList.remove('show'); } }); }
-            function updateNavHighlight() { let index = sections.length; while(--index && window.scrollY + navBarHeight + 50 < sections[index].offsetTop) {} navLinks.forEach((link) => link.classList.remove('active')); if (index >= 0 && index < sections.length) { const activeSectionId = sections[index].id; const activeLink = document.querySelector(`#nav-bar a[href="#${activeSectionId}"]`); if (activeLink) { activeLink.classList.add('active'); } } }
-            window.addEventListener('scroll', () => { lastKnownScrollPosition = window.scrollY; if (!ticking) { window.requestAnimationFrame(() => { updateNavHighlight(); ticking = false; }); ticking = true; } }, { passive: true });
-            window.addEventListener('resize', () => { if (navBarElem) navBarHeight = navBarElem.offsetHeight; updateNavHighlight(); });
-            updateNavHighlight();
-            function generateSummary() { if (!appData) { showFeedback('Données de l\'application non initialisées.', true); return; } const calculatedScores = appData.scores || {}; const riasecScores = {}; let totalInterestsWithScores = 0; for (const typeRIASEC in interestCategoriesRIASEC) { let typeScoreSum = 0; let interestsInTypeCount = 0; interestCategoriesRIASEC[typeRIASEC].forEach(interestKey => { if (calculatedScores[interestKey] !== undefined) { const form = document.getElementById(`form-adherence-${interestKey}`); const numQuestions = form ? form.querySelectorAll('.question').length : 4; typeScoreSum += getScorePercentage(calculatedScores[interestKey], numQuestions); interestsInTypeCount++; totalInterestsWithScores++; } }); riasecScores[typeRIASEC] = interestsInTypeCount > 0 ? Math.round(typeScoreSum / interestsInTypeCount) : 0; } categoryScoresContainer.innerHTML = ''; if (totalInterestsWithScores === 0) { categoryScoresContainer.innerHTML = '<p class="text-center text-gray-500 italic">Aucun score calculé. Complétez les questionnaires et cliquez sur "Voir mon Adhésion" ou chargez vos données.</p>'; } else { Object.keys(riasecScores).forEach(typeRIASEC => { const average = riasecScores[typeRIASEC]; const itemHTML = ` <div class="category-score-item"> <strong>${typeRIASEC}</strong> <div class="graph-bar-container"> <div class="graph-bar" style="width: ${average}%; background-color: ${getRIASECColor(typeRIASEC, average / 100)};"></div> </div> <p>${average}% d'adhésion moyenne</p> </div>`; categoryScoresContainer.innerHTML += itemHTML; }); } generateAnalysisTextForRIASEC(riasecScores); summaryResultsArea.style.display = 'block'; }
-            function getRIASECColor(typeRIASEC, intensity = 0.7) { const colors = { 'Réaliste (R)': `rgba(34, 139, 34, ${intensity})`, 'Investigateur (I)': `rgba(0, 0, 139, ${intensity})`, 'Artistique (A)': `rgba(255, 0, 0, ${intensity})`, 'Social (S)': `rgba(255, 165, 0, ${intensity})`, 'Entreprenant (E)': `rgba(255, 215, 0, ${intensity})`, 'Conventionnel (C)': `rgba(160, 160, 160, ${intensity})` }; return colors[typeRIASEC] || `rgba(107, 114, 128, ${intensity})`; }
-            function generateAnalysisTextForRIASEC(riasecScores) { if (!analysisTextElement) return; let analysis = "Votre profil d'intérêts selon la typologie RIASEC suggère :<br>"; const sortedTypes = Object.entries(riasecScores).sort(([,a],[,b]) => b-a); if (sortedTypes.length === 0 || sortedTypes.every(type => type[1] === 0)) { analysisTextElement.innerHTML = "Complétez les questionnaires pour obtenir une analyse de vos intérêts RIASEC."; return; } const topType = sortedTypes[0][0]; const topScore = sortedTypes[0][1]; if (topScore >= 70) { analysis += `<li>Un profil <strong>très marqué</strong> pour le type <strong>${topType}</strong> (${topScore}%). C'est votre orientation principale.</li>`; } else if (topScore >= 55) { analysis += `<li>Un profil <strong>notable</strong> pour le type <strong>${topType}</strong> (${topScore}%). Cette orientation est significative.</li>`; } else if (topScore >= 40) { analysis += `<li>Un profil <strong>modéré</strong> pour le type <strong>${topType}</strong> (${topScore}%). À explorer en combinaison avec d'autres.</li>`; } else if (topScore > 0) { analysis += `<li>Vos types RIASEC principaux ne se dégagent pas fortement pour l'instant (score max: ${topScore}% pour ${topType}). Consultez le Profil Radar pour affiner.</li>`; } else { analysis += `<li>Aucun type RIASEC ne se dégage. Complétez davantage de questionnaires ou revoyez vos réponses.</li>`; } if (sortedTypes.length > 1 && topScore > 0) { const secondType = sortedTypes[1][0]; const secondScore = sortedTypes[1][1]; if (secondScore >= 50) { analysis += `<li>Le type <strong>${secondType}</strong> (${secondScore}%) ressort également. Votre code RIASEC pourrait être ${topType.substring(0,1)}${secondType.substring(0,1)}.</li>`; if (sortedTypes.length > 2) { const thirdType = sortedTypes[2][0]; const thirdScore = sortedTypes[2][1]; if (thirdScore >= 45) { analysis += `<li>Et possiblement le type <strong>${thirdType}</strong> (${thirdScore}%) en troisième position, formant un code ${topType.substring(0,1)}${secondType.substring(0,1)}${thirdType.substring(0,1)}.</li>`; } } } } analysis += "<br>Utilisez ces indications pour cibler votre recherche sur Métierscope et consultez les conseils de la section 'Comprendre votre profil RIASEC'."; analysisTextElement.innerHTML = `<ul>${analysis}</ul>`; }
-            if (generateSummaryButton) { generateSummaryButton.addEventListener('click', generateSummary); }
-            function generateInterestProfileChart() { if (!appData || !appData.scores || Object.keys(appData.scores).length === 0) { interestChartFeedback.textContent = 'Aucun score disponible. Complétez les questionnaires et cliquez sur "Voir mon Adhésion" ou chargez vos données.'; interestChartFeedback.style.display = 'block'; interestChartContainer.style.display = 'none'; return; } const chartLabels = orderedInterestKeys.map(key => interestLabelsForChartRIASEC[key] || key.replace('interet-', 'I')); const chartData = orderedInterestKeys.map(key => { if (appData.scores[key] !== undefined) { const form = document.getElementById(`form-adherence-${key}`); const numQuestions = form ? form.querySelectorAll('.question').length : 4; return getScorePercentage(appData.scores[key], numQuestions); } return 0; }); interestChartFeedback.style.display = 'none'; interestChartContainer.style.display = 'block'; if (interestProfileChartInstance) { interestProfileChartInstance.destroy(); } interestProfileChartInstance = new Chart(interestChartCanvas, { type: 'radar', data: { labels: chartLabels, datasets: [{ label: 'Adhésion aux Intérêts (%)', data: chartData, fill: true, backgroundColor: 'rgba(13, 148, 136, 0.2)', borderColor: 'rgb(13, 148, 136)', pointBackgroundColor: 'rgb(13, 148, 136)', pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: 'rgb(13, 148, 136)' }] }, options: { responsive: true, maintainAspectRatio: false, scales: { r: { beginAtZero: true, max: 100, min: 0, ticks: { stepSize: 20, backdropColor: 'rgba(255, 255, 255, 0.75)' }, pointLabels: { font: { size: 9 } }, grid: { color: 'rgba(0, 0, 0, 0.1)' } }}, plugins: { legend: { display: false }, title: { display: true, text: 'Profil d\'Adhésion aux Intérêts Individuels (RIASEC)' }, tooltip: { callbacks: { label: function(context) { return `${context.dataset.label || ''}: ${context.parsed.r}%`; }}}} } }); }
-            if (generateInterestChartButton) { generateInterestChartButton.addEventListener('click', generateInterestProfileChart); }
-            async function generatePdf() { showFeedback("Génération du PDF en cours..."); orderedInterestKeys.forEach(interestKey => updateInterestScore(interestKey)); generateSummary(); generateInterestProfileChart(); renderMetierscopeFichesList(); await new Promise(resolve => setTimeout(resolve, 500)); const { jsPDF } = window.jspdf; const pdf = new jsPDF({ orientation: 'p', unit: 'pt', format: 'a4' }); const margin = 40; const pdfWidth = pdf.internal.pageSize.getWidth(); const contentWidth = pdfWidth - 2 * margin; let currentY = margin; const pageHeight = pdf.internal.pageSize.getHeight(); function addText(text, x, y, options = {}) { const fontSize = options.fontSize || 10; const lineHeightFactor = 1.2; pdf.setFontSize(fontSize); const splitText = pdf.splitTextToSize(text, contentWidth - (options.isListItem ? 10 : 0)); const textHeight = splitText.length * fontSize * lineHeightFactor; if (y + textHeight > pageHeight - margin && !options.noPageBreak) { pdf.addPage(); y = margin; } pdf.text(splitText, x, y, options); return y + textHeight; } async function addCanvasImage(elementId, options = {}) { const element = document.getElementById(elementId); let targetElement = element; if (element && element.tagName !== 'CANVAS') { targetElement = element.querySelector('canvas');} const isVisible = targetElement && targetElement.offsetParent !== null && targetElement.width > 0 && targetElement.height > 0; if (!targetElement || !isVisible) { console.warn(`Élément ${elementId} non trouvé, non visible ou dimensions nulles pour le PDF.`); currentY = addText(`[Graphique ${elementId} non affiché ou données manquantes]`, margin, currentY, { fontSize: 9, fontStyle: 'italic' }); currentY += 10; return; } await html2canvas(targetElement, { scale: 2, useCORS: true, backgroundColor: '#ffffff', ...options }).then(canvas => { try { const imgData = canvas.toDataURL('image/png'); const imgProps = pdf.getImageProperties(imgData); const imgWidth = contentWidth; const imgHeight = (imgProps.height * imgWidth) / imgProps.width; if (currentY + imgHeight > pageHeight - margin) { pdf.addPage(); currentY = margin; } pdf.addImage(imgData, 'PNG', margin, currentY, imgWidth, imgHeight); currentY += imgHeight + 15; } catch (e) { console.error("Erreur PDF addImage pour", elementId, e); currentY = addText(`[Erreur rendu ${elementId}]`, margin, currentY, { fontSize: 9, fontStyle: 'italic' }); currentY += 10; } }).catch(err => { console.error(`Erreur html2canvas pour ${elementId}:`, err); currentY = addText(`[Erreur capture ${elementId}]`, margin, currentY, { fontSize: 9, fontStyle: 'italic' }); currentY += 10; }); } try { pdf.setFont("helvetica", "bold"); currentY = addText("Bilan Explorateur d'Intérêts Métierscope (RIASEC)", pdfWidth / 2, currentY, { align: 'center', fontSize: 16 }); currentY += 10; pdf.setFont("helvetica", "bold"); currentY = addText("Synthèse par Type RIASEC (I31)", margin, currentY, { fontSize: 14 }); currentY += 5; pdf.setFont("helvetica", "bold"); currentY = addText("Adhésion Moyenne par Type RIASEC (%)", margin, currentY, { fontSize: 12 }); pdf.setFont("helvetica", "normal"); let catScoresText = ""; Object.entries(interestCategoriesRIASEC).forEach(([typeRIASEC, interests]) => { let sumPercent = 0; let count = 0; interests.forEach(interestKey => { if (appData.scores[interestKey] !== undefined) { const form = document.getElementById(`form-adherence-${interestKey}`); const numQ = form ? form.querySelectorAll('.question').length : 4; sumPercent += getScorePercentage(appData.scores[interestKey], numQ); count++; } }); const avg = count > 0 ? Math.round(sumPercent / count) : 0; catScoresText += `${typeRIASEC}: ${avg}% ${count > 0 ? '('+count+'/'+interests.length+' int. répondus)' : ''}\n`; }); if (!catScoresText) catScoresText = "Aucun score calculé."; currentY = addText(catScoresText, margin, currentY, { fontSize: 9 }); currentY += 10; pdf.setFont("helvetica", "bold"); currentY = addText("Analyse Indicative du Profil RIASEC", margin, currentY, { fontSize: 12 }); const analysisElement = document.getElementById('analysis-text'); if (analysisElement) { const analysisContent = analysisElement.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/<\/?ul>/gi, '').replace(/<li>/gi, '\n- ').replace(/<\/?li>/gi, '').replace(/<strong>(.*?)<\/strong>/g, '$1'); pdf.setFont("helvetica", "italic"); currentY = addText(analysisContent, margin, currentY, { fontSize: 9 }); } else { currentY = addText("[Analyse non disponible]", margin, currentY, { fontSize: 9, fontStyle: 'italic' }); } currentY += 10; pdf.addPage(); currentY = margin; pdf.setFont("helvetica", "bold"); currentY = addText("Profil Radar des Intérêts Individuels (I32)", margin, currentY, { fontSize: 14 }); currentY += 5; await addCanvasImage('interestProfileChart'); pdf.setFont("helvetica", "bold"); currentY = addText("Clés de Lecture du Radar", margin, currentY, { fontSize: 12 }); const keyPointsList = document.querySelector('#interet-32 .key-points-box ul'); if (keyPointsList) { pdf.setFont("helvetica", "normal"); keyPointsList.querySelectorAll('li').forEach(li => { currentY = addText(`- ${li.textContent.trim()}`, margin + 10, currentY, { fontSize: 9, isListItem: true }); }); } currentY += 15; if (appData.metierscopeFiches && appData.metierscopeFiches.length > 0) { if (currentY + 80 > pageHeight - margin && appData.metierscopeFiches.length > 0) { pdf.addPage(); currentY = margin; } pdf.setFont("helvetica", "bold"); currentY = addText("Mes Fiches Métierscope Explorées", margin, currentY, { fontSize: 14 }); currentY += 10; appData.metierscopeFiches.forEach(fiche => { if (currentY + 70 > pageHeight - margin) { pdf.addPage(); currentY = margin; } pdf.setFont("helvetica", "bold"); currentY = addText(fiche.nom, margin, currentY, { fontSize: 11, noPageBreak: true }); pdf.setFont("helvetica", "normal"); currentY = addText(`URL: ${fiche.url}`, margin, currentY, { fontSize: 8, noPageBreak: true }); currentY = addText(`Évaluation Marché: ${formatEvaluationApp(fiche.evaluation)}`, margin, currentY, { fontSize: 9, noPageBreak: true }); if (fiche.notes) { currentY = addText(`Notes: ${fiche.notes}`, margin, currentY, { fontSize: 9, noPageBreak: true }); } currentY += 10; }); } pdf.save('Bilan_Interets_Metierscope_RIASEC_Fiches.pdf'); showFeedback("PDF généré avec succès !"); } catch (pdfError) { console.error("Erreur PDF:", pdfError); showFeedback("Erreur PDF.", true); } }
-    if (printSummaryButton) { printSummaryButton.addEventListener('click', () => { orderedInterestKeys.forEach(interestKey => updateInterestScore(interestKey)); generateSummary(); generateInterestProfileChart(); renderMetierscopeFichesList(); setTimeout(() => { document.body.classList.add('printing-summary'); window.print(); document.body.classList.remove('printing-summary'); }, 750); }); }
-    if (pdfSummaryButton && typeof html2canvas !== 'undefined' && typeof jspdf !== 'undefined') { pdfSummaryButton.addEventListener('click', generatePdf); }
-
-    // --- LOGIQUE POUR GESTIONNAIRE FICHES MÉTIERSCOPE ---
-                  
-            // Dans la Partie 7 (JavaScript Complet), trouvez et remplacez la fonction suivante :
-
-                     // Dans la Partie 7 (JavaScript Complet), trouvez et remplacez la fonction suivante :
-
-            if (loadCurrentIframeBtnApp) {
-                loadCurrentIframeBtnApp.addEventListener('click', () => {
-                    let url = currentUrlMetierInputApp.value.trim(); 
+            orderedInterestKeys.forEach(interestKey => {
+                const form = document.getElementById(`form-adherence-${interestKey}`);
+                if (form) {
+                    form.reset();
+                    const resultsContainer = document.getElementById(`results-${interestKey}`);
+                    if (resultsContainer) resultsContainer.style.display = 'none';
+                    form.querySelectorAll('label').forEach(lbl => lbl.classList.remove('checked-label'));
                     
-                    if (url) {
-                        if (url.startsWith('http://') || url.startsWith('https://')) {
-                            // On essaie de charger l'iframe
-                            metierscopeIframeApp.src = url;
-                            metierscopeIframeApp.style.display = 'block';
-                            if(iframePlaceholderApp) iframePlaceholderApp.style.display = 'none';
-                            if(iframeWarningApp) iframeWarningApp.style.display = 'block';
-                            
-                            // On essaie d'extraire et de pré-remplir le nom systématiquement si possible
-                            const extractedName = extractMetierNameFromUrlApp(url);
-                            if (currentNomMetierInputApp && extractedName) {
-                                currentNomMetierInputApp.value = extractedName;
-                            } else if (currentNomMetierInputApp) {
-                                // Si on ne peut pas extraire, on ne fait rien au champ nom, 
-                                // il garde sa valeur actuelle (qui pourrait être vide ou saisie par l'utilisateur)
+                    if (appData.questionnaireAnswers && appData.questionnaireAnswers[interestKey]) {
+                        Object.entries(appData.questionnaireAnswers[interestKey]).forEach(([name, value]) => {
+                            if (value !== null) {
+                                const radio = form.querySelector(`input[name="${name}"][value="${value}"]`);
+                                if (radio) {
+                                    radio.checked = true;
+                                    radio.closest('label').classList.add('checked-label');
+                                }
                             }
+                        });
+                    }
+                    updateInterestScore(interestKey);
+                }
+            });
+            
+            renderMetierscopeFichesList();
+        }
+        
+        function saveToLocalStorage() { 
+            try { 
+                updateAppDataFromUI();
+                localStorage.setItem(APP_STORAGE_KEY, JSON.stringify(appData)); 
+                showFeedback('Session sauvegardée dans le navigateur !'); 
+            } catch (error) { 
+                console.error('Erreur de sauvegarde locale :', error); 
+                showFeedback('Erreur lors de la sauvegarde.', true); 
+            } 
+        }
+        
+        function loadFromLocalStorage() { 
+            const savedData = localStorage.getItem(APP_STORAGE_KEY); 
+            if (savedData) { 
+                try { 
+                    const parsedData = JSON.parse(savedData); 
+                    renderDataToUI(parsedData); 
+                    showFeedback('Session chargée depuis le navigateur !'); 
+                } catch (error) { 
+                    console.error('Erreur de chargement local :', error); 
+                    showFeedback('Données locales corrompues.', true); 
+                } 
+            } else { 
+                showFeedback('Aucune session sauvegardée trouvée.', true); 
+            } 
+        }
+        
+        function exportToFile() { 
+            updateAppDataFromUI();
+            const dataStr = JSON.stringify(appData, null, 2); 
+            const blob = new Blob([dataStr], { type: 'application/json' }); 
+            let identifier = (appData.userIdentifier.replace('_', ' ').trim() || 'session_interets').replace(/[^a-z0-9.-]/gi, '_').toLowerCase();
+            const filename = `${identifier}_Metierscope.json`; 
+            const link = document.createElement('a'); 
+            link.href = URL.createObjectURL(blob); 
+            link.download = filename; 
+            document.body.appendChild(link); 
+            link.click(); 
+            document.body.removeChild(link); 
+            URL.revokeObjectURL(link.href); 
+            showFeedback(`Fichier ${filename} exporté.`); 
+        }
 
-                        } else {
-                            alert("L'URL de la fiche Métierscope doit commencer par http:// ou https://.");
-                            metierscopeIframeApp.style.display = 'none';
-                            if(iframePlaceholderApp) iframePlaceholderApp.style.display = 'flex';
-                            if(iframeWarningApp) iframeWarningApp.style.display = 'none';
-                        }
-                    } else {
-                        alert("Veuillez entrer une URL pour charger la fiche.");
-                        metierscopeIframeApp.style.display = 'none';
-                        if(iframePlaceholderApp) iframePlaceholderApp.style.display = 'flex';
-                        if(iframeWarningApp) iframeWarningApp.style.display = 'none';
+        function handleFileImport(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = function(e) { try { const data = JSON.parse(e.target.result); if ('userIdentifier' in data && 'metierscopeFiches' in data) { renderDataToUI(data); showFeedback(`Session '${data.userIdentifier || 'sans nom'}' importée avec succès.`); } else { throw new Error("Format de fichier invalide."); } } catch (error) { console.error("Erreur d'importation : ", error); showFeedback("Erreur: Le fichier est corrompu ou invalide.", true); } }; reader.readAsText(file); fileInput.value = ''; }
+        
+        function resetApplication() { if (confirm("ATTENTION !\n\nVoulez-vous vraiment effacer toutes les données de la session actuelle dans le navigateur ?\n\nCette action est irréversible et n'affecte pas les fichiers que vous avez exportés.")) { localStorage.removeItem(APP_STORAGE_KEY); location.reload(); } }
+        
+        function exportToHtml() {
+            updateAppDataFromUI();
+            const data = appData;
+            const date = new Date().toLocaleString('fr-FR');
+            let report = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Rapport Métierscope - ${data.userIdentifier}</title>
+            <style>body{font-family:sans-serif;margin:2em;line-height:1.6;}h1,h2,h3{color:#0d9488;}h2{border-bottom:2px solid #0d9488;padding-bottom:5px;}
+            .section{margin-bottom:2em;padding:1em;border:1px solid #ddd;border-radius:8px; page-break-inside:avoid;} .score{font-weight:bold;font-size:1.2em;}
+            .notes{white-space:pre-wrap;background-color:#f9f9f9;padding:1em;border-radius:4px;}</style></head><body>
+            <h1>Rapport d'Exploration d'Intérêts</h1>
+            <p><strong>Utilisateur :</strong> ${mainUserIdentifier.textContent || 'Non spécifié'}</p><p><strong>Date du rapport :</strong> ${date}</p>
+            <div class="section"><h2>Bilan RIASEC</h2>`;
+
+            for (const typeRIASEC in interestCategoriesRIASEC) {
+                let typeScoreSum = 0, interestsInTypeCount = 0;
+                interestCategoriesRIASEC[typeRIASEC].forEach(interestKey => {
+                    if (data.scores[interestKey] !== undefined) {
+                        const form = document.getElementById(`form-adherence-${interestKey}`);
+                        const numQuestions = form ? form.querySelectorAll('.question').length : 4;
+                        typeScoreSum += getScorePercentage(data.scores[interestKey], numQuestions);
+                        interestsInTypeCount++;
                     }
                 });
+                const score = interestsInTypeCount > 0 ? Math.round(typeScoreSum / interestsInTypeCount) : 0;
+                report += `<p><strong>${typeRIASEC}:</strong> <span class="score">${score}%</span></p>`;
+            }
+            report += `</div>`;
+            
+            if(data.metierscopeFiches && data.metierscopeFiches.length > 0) {
+                report += `<div class="section"><h2>Fiches Métierscope Explorées</h2>`;
+                data.metierscopeFiches.forEach(fiche => {
+                    report += `<h3>${fiche.nom}</h3><p><strong>Évaluation Marché:</strong> ${formatEvaluationApp(fiche.evaluation)}</p>`;
+                    if (fiche.notes) report += `<div class="notes">${fiche.notes}</div>`;
+                    report += `<p><a href="${fiche.url}" target="_blank">Lien vers la fiche</a></p><hr>`;
+                });
+                report += `</div>`;
+            }
+             if (data.notes) {
+                report += `<div class="section"><h2>Réflexions Générales</h2><div class="notes">${data.notes}</div></div>`;
             }
 
-            // La fonction extractMetierNameFromUrlApp reste la même :
-            function extractMetierNameFromUrlApp(url) {
-                try {
-                    const pathSegments = new URL(url).pathname.split('/');
-                    const ficheMetierIndex = pathSegments.findIndex(segment => segment === 'fiche-metier');
-                    if (ficheMetierIndex > -1 && ficheMetierIndex + 2 < pathSegments.length) {
-                        const potentialNameSegment = pathSegments[ficheMetierIndex + 2];
-                        if (potentialNameSegment && !potentialNameSegment.match(/^[A-Z]\d{4}$/i)) { 
-                            return potentialNameSegment.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                        }
-                    }
-                } catch (e) { console.warn("URL invalide pour extraction nom:", url, e); }
-                return '';
-            }
+            report += `</body></html>`;
+            const blob = new Blob([report], { type: 'text/html' });
+            let identifier = (data.userIdentifier.replace('_', ' ').trim() || 'rapport_interets').replace(/[^a-z0-9.-]/gi, '_').toLowerCase();
+            const filename = `${identifier}_rapport_metierscope.html`;
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+            showFeedback(`Rapport HTML exporté.`);
+        }
 
-            // La fonction currentNomMetierInputApp.addEventListener('input', ...) pour dataset.autoFilled n'est plus nécessaire avec cette simplification.
-            // Vous pouvez la supprimer ou la commenter si elle était présente.
-    if(currentNomMetierInputApp) {
-        currentNomMetierInputApp.addEventListener('input', () => {
-            currentNomMetierInputApp.dataset.autoFilled = 'false';
-        });
-    }
+        function updateUserIdentifier() {
+            const nom = topUserNomInput.value.trim();
+            const prenom = topUserPrenomInput.value.trim();
+            mainUserIdentifier.textContent = `${prenom} ${nom}`;
+        }
 
-    if (currentFicheFormApp) {
-        currentFicheFormApp.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const nomMetier = currentNomMetierInputApp.value;
-            const urlMetier = currentUrlMetierInputApp.value;
-            const evalMarcheChecked = document.querySelector('input[name="app-current-eval-marche"]:checked');
-            const notesMetier = currentNotesMetierTextareaApp.value;
-            const ficheId = currentFicheIdInputApp.value;
-
-            if (!nomMetier || !urlMetier || !evalMarcheChecked) {
-                alert("Veuillez remplir le nom du métier, l'URL et sélectionner une évaluation du marché.");
+        // --- GESTIONNAIRE DE FICHES ---
+        function extractMetierNameFromUrlApp(url) { try { const pathSegments = new URL(url).pathname.split('/'); const ficheMetierIndex = pathSegments.findIndex(segment => segment === 'fiche-metier'); if (ficheMetierIndex > -1 && ficheMetierIndex + 2 < pathSegments.length) { const potentialNameSegment = pathSegments[ficheMetierIndex + 2]; if (potentialNameSegment && !potentialNameSegment.match(/^[A-Z]\d{4}$/i)) { return potentialNameSegment.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase()); } } } catch (e) { console.warn("URL invalide pour extraction nom:", url, e); } return ''; }
+        function clearCurrentMetierscopeFicheForm(clearIframe = true) { if(currentFicheFormApp) currentFicheFormApp.reset(); const defaultRadioEval = document.querySelector('input[name="app-current-eval-marche"][value="tres_porteur"]'); if(defaultRadioEval) defaultRadioEval.checked = true; if(currentFicheIdInputApp) currentFicheIdInputApp.value = ''; if(saveUpdateFicheBtnApp) { saveUpdateFicheBtnApp.innerHTML = '<i class="fas fa-plus-circle mr-2"></i>Ajouter Fiche'; saveUpdateFicheBtnApp.classList.remove('primary'); saveUpdateFicheBtnApp.classList.add('secondary'); } if (clearIframe && metierscopeIframeApp) { metierscopeIframeApp.src = 'about:blank'; metierscopeIframeApp.style.display = 'none'; if(iframePlaceholderApp) iframePlaceholderApp.style.display = 'flex'; } if(iframeWarningApp) iframeWarningApp.style.display = 'none'; if(currentUrlMetierInputApp) currentUrlMetierInputApp.focus(); }
+        function getEvalClassApp(evaluationValue) { switch(evaluationValue) { case 'tres_porteur': return 'eval-tres-porteur'; case 'assez_porteur': return 'eval-assez-porteur'; case 'moyen_porteur': return 'eval-moyen-porteur'; case 'peu_porteur': return 'eval-peu-porteur'; case 'pas_porteur': return 'eval-pas-porteur'; default: return ''; } }
+        function formatEvaluationApp(val) { const labels = { tres_porteur: "Très porteur", assez_porteur: "Assez porteur", moyen_porteur: "Moyennement", peu_porteur: "Peu porteur", pas_porteur: "Pas du tout" }; return labels[val] || val; }
+        function renderMetierscopeFichesList() { if (!fichesListAppDiv) return; if (!appData.metierscopeFiches || appData.metierscopeFiches.length === 0) { fichesListAppDiv.innerHTML = '<p class="text-sm text-gray-500 italic text-center">Aucune fiche Métierscope sauvegardée.</p>'; return; } fichesListAppDiv.innerHTML = ''; appData.metierscopeFiches.forEach(fiche => { const div = document.createElement('div'); div.className = 'fiche-item-hybride'; let styleProperties = `color: var(--${getEvalClassApp(fiche.evaluation).replace('eval-','').replace('-','_')}) !important; font-weight: ${fiche.evaluation === 'tres_porteur' || fiche.evaluation === 'pas_porteur' ? 'bold' : 'normal'};`; div.innerHTML = `<h3 class="${getEvalClassApp(fiche.evaluation)}">${fiche.nom}</h3><p><a href="${fiche.url}" target="_blank" rel="noopener noreferrer" class="url-link" title="Ouvrir dans un nouvel onglet">${fiche.url.length > 35 ? fiche.url.substring(0,32) + '...' : fiche.url}</a></p><p><strong>Éval. Marché :</strong> <span class="${getEvalClassApp(fiche.evaluation)}">${formatEvaluationApp(fiche.evaluation)}</span></p>${fiche.notes ? `<p><strong>Notes :</strong> ${fiche.notes.substring(0,40).replace(/\n/g, '<br>')}${fiche.notes.length > 40 ? '...' : ''}</p>` : ''}<div class="button-group" style="margin-top:8px; margin-bottom:0; justify-content: flex-end;"><button onclick="window.viewEditMetierscopeFiche(${fiche.id})" class="action primary" style="background-color: var(--secondary-color);"><i class="fas fa-edit"></i> Voir/Éditer</button><button onclick="window.removeMetierscopeFiche(${fiche.id})" class="action danger" style="background-color: #c0392b;"><i class="fas fa-trash-alt"></i> Suppr.</button></div>`; fichesListAppDiv.appendChild(div); });}
+        window.viewEditMetierscopeFiche = function(id) { const fiche = appData.metierscopeFiches.find(f => f.id == id); if (fiche) { if(currentNomMetierInputApp) currentNomMetierInputApp.value = fiche.nom; if(currentUrlMetierInputApp) currentUrlMetierInputApp.value = fiche.url; if(currentNotesMetierTextareaApp) currentNotesMetierTextareaApp.value = fiche.notes; if(currentFicheIdInputApp) currentFicheIdInputApp.value = fiche.id; const radioToSelect = document.querySelector(`input[name="app-current-eval-marche"][value="${fiche.evaluation}"]`); if (radioToSelect) radioToSelect.checked = true; if(saveUpdateFicheBtnApp) { saveUpdateFicheBtnApp.innerHTML = '<i class="fas fa-save mr-2"></i>Mettre à Jour'; saveUpdateFicheBtnApp.classList.remove('secondary'); saveUpdateFicheBtnApp.classList.add('primary'); } if (fiche.url && metierscopeIframeApp) { metierscopeIframeApp.src = fiche.url; metierscopeIframeApp.style.display = 'block'; if(iframePlaceholderApp) iframePlaceholderApp.style.display = 'none'; if(iframeWarningApp) iframeWarningApp.style.display = 'block'; } else if (metierscopeIframeApp) { metierscopeIframeApp.src = 'about:blank'; metierscopeIframeApp.style.display = 'none'; if(iframePlaceholderApp) iframePlaceholderApp.style.display = 'flex'; if(iframeWarningApp) iframeWarningApp.style.display = 'none'; } document.getElementById('section-fiches-metierscope').scrollIntoView({ behavior: "smooth", block: "start" }); } }
+        window.removeMetierscopeFiche = function(id) { if (confirm("Voulez-vous vraiment supprimer cette fiche Métierscope de votre liste ?")) { appData.metierscopeFiches = appData.metierscopeFiches.filter(f => f.id != id); renderMetierscopeFichesList(); if (currentFicheIdInputApp && currentFicheIdInputApp.value == id) { clearCurrentMetierscopeFicheForm(true); } } }
+        
+        // --- NOUVELLE LOGIQUE POUR LA SECTION GEMINI ---
+        function generateGeminiPrompt() {
+            if (!appData || !appData.scores || Object.keys(appData.scores).length === 0) {
+                showFeedback("Veuillez d'abord compléter des questionnaires ou charger vos données.", true);
+                geminiPromptOutput.value = "Erreur : Aucune donnée à analyser. Veuillez compléter l'explorateur d'intérêts avant de générer le prompt.";
+                copyPromptBtn.disabled = true;
                 return;
             }
-            const evalMarche = evalMarcheChecked.value;
 
-            if (ficheId) { 
-                const index = appData.metierscopeFiches.findIndex(f => f.id == ficheId);
-                if (index > -1) {
-                    appData.metierscopeFiches[index] = { ...appData.metierscopeFiches[index], nom: nomMetier, url: urlMetier, evaluation: evalMarche, notes: notesMetier };
-                    showFeedback("Fiche Métierscope mise à jour !");
+            let prompt = `Bonjour, agis en tant que coach expert en orientation professionnelle. Voici les résultats de mon questionnaire d'intérêts basé sur la typologie RIASEC. Je te demande de réaliser un bilan complet et de me fournir une liste de métiers exhaustive et pertinente.\n\n`;
+            prompt += `Voici mes données :\n\n`;
+            
+            if (appData.userIdentifier && appData.userIdentifier.trim() !== '_') {
+                prompt += `--- IDENTIFIANT ---\n`;
+                prompt += `Profil pour: ${appData.userIdentifier.replace('_', ' ')}\n\n`;
+            }
+
+            prompt += `--- PROFIL RIASEC GLOBAL (scores moyens en %) ---\n`;
+            const riasecScores = {};
+            for (const typeRIASEC in interestCategoriesRIASEC) {
+                let typeScoreSum = 0;
+                let interestsInTypeCount = 0;
+                interestCategoriesRIASEC[typeRIASEC].forEach(interestKey => {
+                    if (appData.scores[interestKey] !== undefined) {
+                        const form = document.getElementById(`form-adherence-${interestKey}`);
+                        const numQuestions = form ? form.querySelectorAll('.question').length : 4;
+                        typeScoreSum += getScorePercentage(appData.scores[interestKey], numQuestions);
+                        interestsInTypeCount++;
+                    }
+                });
+                riasecScores[typeRIASEC] = interestsInTypeCount > 0 ? Math.round(typeScoreSum / interestsInTypeCount) : 0;
+            }
+            const sortedTypes = Object.entries(riasecScores).sort(([,a],[,b]) => b-a);
+            sortedTypes.forEach(([type, score]) => {
+                prompt += `- ${type}: ${score}%\n`;
+            });
+            prompt += `\n`;
+
+            prompt += `--- DÉTAIL DES INTÉRÊTS LES PLUS MARQUÉS (Profil Radar en %) ---\n`;
+            const detailedScores = orderedInterestKeys.map(key => {
+                if (appData.scores[key] !== undefined) {
+                    const form = document.getElementById(`form-adherence-${key}`);
+                    const numQuestions = form ? form.querySelectorAll('.question').length : 4;
+                    return {
+                        label: interestLabelsForChartRIASEC[key],
+                        score: getScorePercentage(appData.scores[key], numQuestions)
+                    };
                 }
-            } else { 
-                const nouvelleFiche = { nom: nomMetier, url: urlMetier, evaluation: evalMarche, notes: notesMetier, id: Date.now() };
-                appData.metierscopeFiches.push(nouvelleFiche);
-                showFeedback("Fiche Métierscope ajoutée !");
+                return null;
+            }).filter(item => item !== null && item.score >= 50).sort((a, b) => b.score - a.score);
+
+            if (detailedScores.length > 0) {
+                detailedScores.forEach(item => {
+                    prompt += `- ${item.label}: ${item.score}%\n`;
+                });
+            } else {
+                prompt += `Aucun intérêt spécifique ne dépasse 50% d'adhésion.\n`;
             }
+            prompt += `\n`;
+
+            if (appData.metierscopeFiches && appData.metierscopeFiches.length > 0) {
+                prompt += `--- FICHES MÉTIERS DÉJÀ EXPLORÉES ---\n`;
+                appData.metierscopeFiches.forEach(fiche => {
+                    prompt += `- Métier: ${fiche.nom}\n`;
+                    prompt += `  - Évaluation du marché: ${formatEvaluationApp(fiche.evaluation)}\n`;
+                    if (fiche.notes) {
+                        prompt += `  - Mes notes: ${fiche.notes}\n`;
+                    }
+                });
+                prompt += `\n`;
+            }
+            
+            prompt += `--- TA MISSION ---\n`;
+            prompt += `En te basant sur ces données, fournis une analyse structurée en 4 points :\n\n`;
+            prompt += `1.  **Synthèse du Profil RIASEC :** Fais un bilan complet de mon profil RIASEC. Commente mes types dominants (les 2 ou 3 premiers), explique ce que cela signifie en termes d'environnements de travail et de types d'activités qui pourraient me convenir. Mets en évidence les éventuels paradoxes ou complémentarités entre mes scores.\n\n`;
+            prompt += `2.  **Analyse du Profil Radar Détaillé :** Commente mes intérêts spécifiques les plus élevés. Fais le lien entre ces intérêts forts et mon profil RIASEC global. Par exemple, si mon type principal est 'Social' mais que j'ai un score élevé en 'Construire (R)', analyse cette combinaison.\n\n`;
+            prompt += `3.  **Pistes Métiers Exhaustives :** Propose une liste de métiers la plus complète et exhaustive possible, organisée par grands domaines ou par type RIASEC. Ne te limite pas aux métiers évidents. Pense à des métiers de niche, des métiers émergents ou des combinaisons de compétences. Pour chaque suggestion, explique brièvement en quoi elle correspond à mon profil.\n\n`;
+            prompt += `4.  **Conseils d'Orientation :** Termine par 2 ou 3 conseils personnalisés pour approfondir ma réflexion, en tenant compte des fiches métiers que j'ai déjà explorées si la liste est fournie.`;
+
+            geminiPromptOutput.value = prompt;
+            copyPromptBtn.disabled = false;
+            showFeedback("Prompt personnalisé généré !");
+        }
+
+        function copyPromptToClipboard() {
+            if (!geminiPromptOutput.value || copyPromptBtn.disabled) return;
+            navigator.clipboard.writeText(geminiPromptOutput.value).then(() => {
+                showFeedback("Prompt copié dans le presse-papiers !");
+            }, (err) => {
+                showFeedback("Erreur lors de la copie.", true);
+                console.error('Erreur de copie: ', err);
+            });
+        }
+        async function generatePdf(){
+            // Check if libraries are loaded
+            if (typeof jspdf === 'undefined' || typeof html2canvas === 'undefined') {
+                showFeedback("Les librairies PDF ne sont pas chargées. Veuillez vérifier votre connexion internet.", true);
+                return;
+            }
+            showFeedback("Génération du PDF en cours...");
+            
+            // Ensure all current data is calculated and ready
+            updateAppDataFromUI();
+            generateSummary();
+            generateInterestProfileChart();
             renderMetierscopeFichesList();
-            clearCurrentMetierscopeFicheForm(false); 
-            // La sauvegarde globale se fait avec le bouton "Sauver Tout"
-        });
-    }
-    
-    if (clearFormBtnApp) {
-        clearFormBtnApp.addEventListener('click', () => clearCurrentMetierscopeFicheForm(true));
-    }
+            await new Promise(r => setTimeout(r, 500)); // Give a moment for charts to render
 
-    function clearCurrentMetierscopeFicheForm(clearIframe = true) {
-        if(currentFicheFormApp) currentFicheFormApp.reset();
-        const defaultRadioEval = document.querySelector('input[name="app-current-eval-marche"][value="tres_porteur"]');
-        if(defaultRadioEval) defaultRadioEval.checked = true;
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({ orientation: 'p', unit: 'pt', format: 'a4' });
+            const margin = 40;
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const contentWidth = pdfWidth - 2 * margin;
+            let currentY = margin;
+            const pageHeight = pdf.internal.pageSize.getHeight();
+
+            function addText(text, x, y, options = {}) {
+                const fontSize = options.fontSize || 10;
+                const lineHeightFactor = 1.2;
+                pdf.setFontSize(fontSize);
+                if(options.fontStyle) pdf.setFont("helvetica", options.fontStyle);
+                
+                const splitText = pdf.splitTextToSize(text, contentWidth - (options.isListItem ? 10 : 0));
+                const textHeight = splitText.length * fontSize * lineHeightFactor;
+                
+                if (y + textHeight > pageHeight - margin && !options.noPageBreak) {
+                    pdf.addPage();
+                    y = margin;
+                }
+                pdf.text(splitText, x, y, options);
+                if(options.fontStyle) pdf.setFont("helvetica", "normal"); // Reset font style
+                return y + textHeight;
+            }
+
+            async function addCanvasImage(elementId, options = {}) {
+                const element = document.getElementById(elementId);
+                let targetElement = element;
+                if (element && element.tagName !== 'CANVAS') {
+                    targetElement = element.querySelector('canvas');
+                }
+                
+                const isVisible = targetElement && targetElement.offsetParent !== null && targetElement.width > 0 && targetElement.height > 0;
+                if (!targetElement || !isVisible) {
+                    console.warn(`Élément ${elementId} non trouvé ou non visible pour le PDF.`);
+                    currentY = addText(`[Graphique ${elementId} non affiché ou données manquantes]`, margin, currentY, { fontSize: 9, fontStyle: 'italic' });
+                    currentY += 10;
+                    return;
+                }
+
+                try {
+                    const canvas = await html2canvas(targetElement, { scale: 2, useCORS: true, backgroundColor: '#ffffff', ...options });
+                    const imgData = canvas.toDataURL('image/png');
+                    const imgProps = pdf.getImageProperties(imgData);
+                    const imgWidth = contentWidth;
+                    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+
+                    if (currentY + imgHeight > pageHeight - margin) {
+                        pdf.addPage();
+                        currentY = margin;
+                    }
+                    pdf.addImage(imgData, 'PNG', margin, currentY, imgWidth, imgHeight);
+                    currentY += imgHeight + 15;
+                } catch (err) {
+                    console.error(`Erreur html2canvas ou addImage pour ${elementId}:`, err);
+                    currentY = addText(`[Erreur de capture du graphique ${elementId}]`, margin, currentY, { fontSize: 9, fontStyle: 'italic' });
+                    currentY += 10;
+                }
+            }
+
+            try {
+                // --- PDF Content ---
+                currentY = addText("Bilan Explorateur d'Intérêts Métierscope (RIASEC)", pdfWidth / 2, currentY, { align: 'center', fontSize: 16, fontStyle: 'bold' });
+                const userNameText = mainUserIdentifier.textContent.trim();
+                if (userNameText) {
+                   currentY = addText(`Pour : ${userNameText}`, pdfWidth / 2, currentY, { align: 'center', fontSize: 11, fontStyle: 'italic' });
+                }
+                currentY += 10;
+                
+                // Section Bilan RIASEC
+                currentY = addText("Synthèse par Type RIASEC", margin, currentY, { fontSize: 14, fontStyle: 'bold' });
+                currentY += 5;
+                
+                const sortedTypes = Object.entries(interestCategoriesRIASEC).map(([typeRIASEC, interests]) => {
+                    let sumPercent = 0, count = 0;
+                    interests.forEach(interestKey => {
+                        if (appData.scores[interestKey] !== undefined) {
+                            const form = document.getElementById(`form-adherence-${interestKey}`);
+                            const numQ = form ? form.querySelectorAll('.question').length : 4;
+                            sumPercent += getScorePercentage(appData.scores[interestKey], numQ);
+                            count++;
+                        }
+                    });
+                    const avg = count > 0 ? Math.round(sumPercent / count) : 0;
+                    return { type: typeRIASEC, score: avg, count: count, total: interests.length };
+                }).sort((a,b) => b.score - a.score);
+
+                sortedTypes.forEach(item => {
+                    let text = `${item.type}: ${item.score}%`;
+                    if(item.count > 0) text += ` (${item.count}/${item.total} int. répondus)`;
+                    currentY = addText(text, margin, currentY, { fontSize: 10 });
+                });
+                currentY += 10;
+
+                // Section Analyse Indicative
+                const analysisElement = document.getElementById('analysis-text');
+                if (analysisElement && analysisElement.innerText.trim() !== "Générez la synthèse pour voir une analyse basée sur vos scores RIASEC.") {
+                    currentY = addText("Analyse Indicative du Profil", margin, currentY, { fontSize: 12, fontStyle: 'bold' });
+                    const analysisContent = analysisElement.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/<\/?ul>/gi, '').replace(/<li>/gi, '\n- ').replace(/<\/?li>/gi, '').replace(/<strong>(.*?)<\/strong>/g, '$1');
+                    currentY = addText(analysisContent, margin, currentY, { fontSize: 9, fontStyle: 'italic' });
+                    currentY += 10;
+                }
+                
+                // Section Radar
+                pdf.addPage();
+                currentY = margin;
+                currentY = addText("Profil Radar des Intérêts Individuels", margin, currentY, { fontSize: 14, fontStyle: 'bold' });
+                currentY += 5;
+                await addCanvasImage('interestProfileChart');
+                
+                // Section Fiches Métiers
+                if (appData.metierscopeFiches && appData.metierscopeFiches.length > 0) {
+                     if (currentY + 80 > pageHeight - margin) {
+                        pdf.addPage();
+                        currentY = margin;
+                    }
+                    currentY = addText("Mes Fiches Métierscope Explorées", margin, currentY, { fontSize: 14, fontStyle: 'bold' });
+                    currentY += 10;
+                    appData.metierscopeFiches.forEach(fiche => {
+                        if (currentY + 60 > pageHeight - margin) {
+                            pdf.addPage();
+                            currentY = margin;
+                        }
+                        currentY = addText(fiche.nom, margin, currentY, { fontSize: 11, fontStyle: 'bold', noPageBreak: true });
+                        currentY = addText(`URL: ${fiche.url}`, margin, currentY, { fontSize: 8, noPageBreak: true });
+                        currentY = addText(`Évaluation Marché: ${formatEvaluationApp(fiche.evaluation)}`, margin, currentY, { fontSize: 9, noPageBreak: true });
+                        if (fiche.notes) {
+                            currentY = addText(`Notes: ${fiche.notes}`, margin, currentY, { fontSize: 9, noPageBreak: true });
+                        }
+                        currentY += 10;
+                    });
+                }
+
+                const filename = `Bilan_Interets_${(userNameText || 'Metierscope').replace(/ /g, '_')}.pdf`;
+                pdf.save(filename);
+                showFeedback("PDF généré avec succès !");
+
+            } catch (pdfError) {
+                console.error("Erreur de génération PDF:", pdfError);
+                showFeedback("Erreur lors de la génération du PDF.", true);
+            }
+        }        
+
+        // --- EVENT LISTENERS ---
+        updateSidebarVisibility(); window.addEventListener('resize', updateSidebarVisibility);
+        window.addEventListener('scroll', updateNavHighlight);
+        window.addEventListener('resize', () => { if (navBarElem) navBarHeight = navBarElem.offsetHeight; updateNavHighlight(); });
         
-        if(currentFicheIdInputApp) currentFicheIdInputApp.value = '';
-        if(saveUpdateFicheBtnApp) {
-            saveUpdateFicheBtnApp.innerHTML = '<i class="fas fa-plus-circle mr-2"></i>Ajouter Fiche à ma Liste'; 
-            saveUpdateFicheBtnApp.classList.remove('primary'); 
-            saveUpdateFicheBtnApp.classList.add('secondary'); 
-        }
+        topUserNomInput.addEventListener('input', updateUserIdentifier);
+        topUserPrenomInput.addEventListener('input', updateUserIdentifier);
+
+        saveNotesButton.addEventListener('click', saveToLocalStorage);
+        loadNotesButton.addEventListener('click', loadFromLocalStorage);
+        exportDataButton.addEventListener('click', exportToFile);
+        exportHtmlButton.addEventListener('click', exportToHtml);
+        importDataButton.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileImport);
+        resetAppButton.addEventListener('click', resetApplication);
+
+        document.querySelectorAll('.adherence-submit-btn').forEach(button => { button.addEventListener('click', () => { updateInterestScore(button.dataset.day); }); });
+        document.querySelectorAll('form[id^="form-adherence-interet-"]').forEach(form => { form.addEventListener('change', (event) => { if (event.target.type === 'radio') { const interestKey = form.id.replace('form-adherence-', ''); document.getElementById(`results-${interestKey}`).style.display = 'none'; form.querySelectorAll(`label`).forEach(lbl => lbl.classList.remove('checked-label')); event.target.closest('label').classList.add('checked-label'); } }); });
+        loadImageButtons.forEach(button => { button.addEventListener('click', () => { const inputId = button.dataset.input; const previewId = button.dataset.preview; const inputElement = document.getElementById(inputId); const previewImg = document.getElementById(previewId); if (inputElement && previewImg) { loadImage(inputElement, previewImg); } }); });
+        document.querySelectorAll('.audio-button').forEach(button => { button.addEventListener('click', () => { const audioKey = button.dataset.audio; modalTitleElem.textContent = `Audio: ${audioKey}`; audioPlaceholderText.style.display = 'block'; audioModal.classList.add('show'); }); });
+        if (closeModalButton) { closeModalButton.addEventListener('click', () => audioModal.classList.remove('show')); }
+        if (audioModal) { audioModal.addEventListener('click', (event) => { if (event.target === audioModal) { audioModal.classList.remove('show'); } }); }
+
+        if (generateSummaryButton) { generateSummaryButton.addEventListener('click', generateSummary); }
+        if (generateInterestChartButton) { generateInterestChartButton.addEventListener('click', generateInterestProfileChart); }
+        if (printSummaryButton) { printSummaryButton.addEventListener('click', () => { generateSummary(); generateInterestProfileChart(); renderMetierscopeFichesList(); setTimeout(() => { document.body.classList.add('printing-summary'); window.print(); document.body.classList.remove('printing-summary'); }, 750); }); }
+        if (pdfSummaryButton) { pdfSummaryButton.addEventListener('click', generatePdf); }
+
+        // Fiches Métierscope Listeners
+        if (loadCurrentIframeBtnApp) { loadCurrentIframeBtnApp.addEventListener('click', () => { let url = currentUrlMetierInputApp.value.trim(); if (url) { if (url.startsWith('http://') || url.startsWith('https://')) { metierscopeIframeApp.src = url; metierscopeIframeApp.style.display = 'block'; if(iframePlaceholderApp) iframePlaceholderApp.style.display = 'none'; if(iframeWarningApp) iframeWarningApp.style.display = 'block'; const extractedName = extractMetierNameFromUrlApp(url); if (currentNomMetierInputApp && extractedName) { currentNomMetierInputApp.value = extractedName; } } else { alert("L'URL doit commencer par http:// ou https://."); } } else { alert("Veuillez entrer une URL."); } }); }
+        if (currentFicheFormApp) { currentFicheFormApp.addEventListener('submit', function(event) { event.preventDefault(); const nomMetier = currentNomMetierInputApp.value, urlMetier = currentUrlMetierInputApp.value, evalMarcheChecked = document.querySelector('input[name="app-current-eval-marche"]:checked'), notesMetier = currentNotesMetierTextareaApp.value, ficheId = currentFicheIdInputApp.value; if (!nomMetier || !urlMetier || !evalMarcheChecked) { alert("Nom, URL et évaluation sont requis."); return; } const evalMarche = evalMarcheChecked.value; if (ficheId) { const index = appData.metierscopeFiches.findIndex(f => f.id == ficheId); if (index > -1) { appData.metierscopeFiches[index] = { ...appData.metierscopeFiches[index], nom: nomMetier, url: urlMetier, evaluation: evalMarche, notes: notesMetier }; showFeedback("Fiche mise à jour !"); } } else { const nouvelleFiche = { nom: nomMetier, url: urlMetier, evaluation: evalMarche, notes: notesMetier, id: Date.now() }; appData.metierscopeFiches.push(nouvelleFiche); showFeedback("Fiche ajoutée !"); } renderMetierscopeFichesList(); clearCurrentMetierscopeFicheForm(false); }); }
+        if (clearFormBtnApp) { clearFormBtnApp.addEventListener('click', () => clearCurrentMetierscopeFicheForm(true)); }
         
-        if (clearIframe && metierscopeIframeApp) {
-            metierscopeIframeApp.src = 'about:blank';
-            metierscopeIframeApp.style.display = 'none';
-            if(iframePlaceholderApp) iframePlaceholderApp.style.display = 'flex';
-        }
-        if(iframeWarningApp) iframeWarningApp.style.display = 'none';
-        if(currentUrlMetierInputApp) currentUrlMetierInputApp.focus();
-        if(currentNomMetierInputApp) currentNomMetierInputApp.dataset.autoFilled = 'true';
-    }
-    
-    function getEvalClassApp(evaluationValue) {
-        switch(evaluationValue) {
-            case 'tres_porteur': return 'eval-tres-porteur';
-            case 'assez_porteur': return 'eval-assez-porteur';
-            case 'moyen_porteur': return 'eval-moyen-porteur';
-            case 'peu_porteur': return 'eval-peu-porteur';
-            case 'pas_porteur': return 'eval-pas-porteur';
-            default: return '';
-        }
-    }
-    function formatEvaluationApp(val) {
-        const labels = { tres_porteur: "Très porteur", assez_porteur: "Assez porteur", moyen_porteur: "Moyennement", peu_porteur: "Peu porteur", pas_porteur: "Pas du tout" };
-        return labels[val] || val;
-    }
+        // Gemini Section Listeners
+        if (generatePromptBtn) { generatePromptBtn.addEventListener('click', generateGeminiPrompt); }
+        if (copyPromptBtn) { copyPromptBtn.addEventListener('click', copyPromptToClipboard); }
 
-        function renderMetierscopeFichesList() {
-        if (!fichesListAppDiv) return; 
-        if (!appData.metierscopeFiches || appData.metierscopeFiches.length === 0) {
-            fichesListAppDiv.innerHTML = '<p class="text-sm text-gray-500 italic text-center">Aucune fiche Métierscope sauvegardée.</p>'; return;
-        }
-        fichesListAppDiv.innerHTML = '';
-        appData.metierscopeFiches.forEach(fiche => {
-            const div = document.createElement('div');
-            div.className = 'fiche-item-hybride'; 
-            
-            // Déterminer la couleur et le style de police directement ici
-            let styleProperties = '';
-            switch(fiche.evaluation) {
-                case 'tres_porteur': 
-                    styleProperties = 'color: #15803d !important; font-weight: bold;'; // Vert foncé
-                    break;
-                case 'assez_porteur': 
-                    styleProperties = 'color: #166534 !important;'; // Vert
-                    break;
-                case 'moyen_porteur': 
-                    styleProperties = 'color: #1d4ed8 !important;'; // Bleu
-                    break;
-                case 'peu_porteur': 
-                    styleProperties = 'color: #f97316 !important;'; // ORANGE VIF
-                    break;
-                case 'pas_porteur': 
-                    styleProperties = 'color: #b91c1c !important; font-weight: bold;'; // Rouge foncé
-                    break;
-                default: 
-                    styleProperties = 'color: var(--text-color) !important;'; // Couleur par défaut
-            }
-            
-            div.innerHTML = `
-                <h3 style="${styleProperties}">${fiche.nom}</h3>
-                <p><a href="${fiche.url}" target="_blank" rel="noopener noreferrer" class="url-link" title="Ouvrir dans un nouvel onglet">${fiche.url.length > 35 ? fiche.url.substring(0,32) + '...' : fiche.url}</a></p>
-                <p><strong>Éval. Marché :</strong> <span style="${styleProperties}">${formatEvaluationApp(fiche.evaluation)}</span></p>
-                ${fiche.notes ? `<p><strong>Notes :</strong> ${fiche.notes.substring(0,40).replace(/\n/g, '<br>')}${fiche.notes.length > 40 ? '...' : ''}</p>` : ''}
-                <div class="button-group" style="margin-top:8px; margin-bottom:0; justify-content: flex-end;">
-                    <button onclick="window.viewEditMetierscopeFiche(${fiche.id})" class="action primary"><i class="fas fa-edit"></i> Voir/Éditer</button>
-                    <button onclick="window.removeMetierscopeFiche(${fiche.id})" class="action danger"><i class="fas fa-trash-alt"></i> Suppr.</button>
-                </div>
-            `;
-            fichesListAppDiv.appendChild(div);
-        });
-    }
-
-    window.viewEditMetierscopeFiche = function(id) { 
-        const fiche = appData.metierscopeFiches.find(f => f.id == id);
-        if (fiche) {
-            if(currentNomMetierInputApp) currentNomMetierInputApp.value = fiche.nom;
-            if(currentUrlMetierInputApp) currentUrlMetierInputApp.value = fiche.url;
-            if(currentNotesMetierTextareaApp) currentNotesMetierTextareaApp.value = fiche.notes;
-            if(currentFicheIdInputApp) currentFicheIdInputApp.value = fiche.id;
-            
-            const radioToSelect = document.querySelector(`input[name="app-current-eval-marche"][value="${fiche.evaluation}"]`);
-            if (radioToSelect) radioToSelect.checked = true;
-            
-            if(saveUpdateFicheBtnApp) {
-                saveUpdateFicheBtnApp.innerHTML = '<i class="fas fa-save mr-2"></i>Mettre à Jour Fiche';
-                saveUpdateFicheBtnApp.classList.remove('secondary');
-                saveUpdateFicheBtnApp.classList.add('primary');
-            }
-            
-            if (fiche.url && metierscopeIframeApp) {
-                metierscopeIframeApp.src = fiche.url;
-                metierscopeIframeApp.style.display = 'block';
-                if(iframePlaceholderApp) iframePlaceholderApp.style.display = 'none';
-                if(iframeWarningApp) iframeWarningApp.style.display = 'block';
-            } else if (metierscopeIframeApp) {
-                metierscopeIframeApp.src = 'about:blank';
-                metierscopeIframeApp.style.display = 'none';
-                if(iframePlaceholderApp) iframePlaceholderApp.style.display = 'flex';
-                if(iframeWarningApp) iframeWarningApp.style.display = 'none';
-            }
-            
-            const fichesSectionForScroll = document.getElementById('section-fiches-metierscope');
-            if (fichesSectionForScroll) {
-                fichesSectionForScroll.scrollIntoView({ behavior: "smooth", block: "start" });
-                 setTimeout(() => { 
-                    const formContainer = document.getElementById('fiches-sidebar'); // La colonne qui contient le formulaire
-                    if(formContainer) formContainer.scrollTop = 0; // Scroll en haut du formulaire DANS la sidebar interne
-                    else if (currentUrlMetierInputApp) currentUrlMetierInputApp.focus();
-                 }, 400); // Délai pour laisser le scroll de page se terminer
-            } else if (currentUrlMetierInputApp) {
-                 currentUrlMetierInputApp.focus(); 
-            }
-        }
-    }
-
-    window.removeMetierscopeFiche = function(id) { 
-        if (confirm("Voulez-vous vraiment supprimer cette fiche Métierscope de votre liste ?")) {
-            appData.metierscopeFiches = appData.metierscopeFiches.filter(f => f.id != id);
-            renderMetierscopeFichesList();
-            if (currentFicheIdInputApp && currentFicheIdInputApp.value == id) { 
-                clearCurrentMetierscopeFicheForm(true);
-            }
-            // saveData(); // Sauvegarde globale effectuée par le bouton "Sauver Tout"
-        }
-    }
-
-    // Appel initial au chargement de la page
-    loadData();
-});
-// ========== FIN DU JAVASCRIPT COMPLET ==========
-    </script>
-    <!-- Script HeyGen (inchangé, si vous l'utilisez toujours) -->
-   
-     
-<script>!function(window){const host="https://labs.heygen.com",url=host+"/guest/streaming-embed?share=eyJxdWFsaXR5IjoiaGlnaCIsImF2YXRhck5hbWUiOiJEZXh0ZXJfRG9jdG9yX1N0YW5kaW5nMl9w%0D%0AdWJsaWMiLCJwcmV2aWV3SW1nIjoiaHR0cHM6Ly9maWxlczIuaGV5Z2VuLmFpL2F2YXRhci92My84%0D%0AOGQ0MjFmOTM5MDQ0YmIwOGQ4OTJlODMzOTMxOTQ4Yl80NTU5MC9wcmV2aWV3X3RhbGtfMS53ZWJw%0D%0AIiwibmVlZFJlbW92ZUJhY2tncm91bmQiOmZhbHNlLCJrbm93bGVkZ2VCYXNlSWQiOiIzMjdkY2Q1%0D%0AOTY2ZjQ0OWIyYjhlYTY2YzIwYzA4MWQ2MSIsInVzZXJuYW1lIjoiYWVlYjM4ODEyMjBiNGFkZDg3%0D%0AYmZiMjgxNDc2ODRmMzgifQ%3D%3D&inIFrame=1",clientWidth=document.body.clientWidth,wrapDiv=document.createElement("div");wrapDiv.id="heygen-streaming-embed";const container=document.createElement("div");container.id="heygen-streaming-container";const stylesheet=document.createElement("style");stylesheet.innerHTML=`\n  #heygen-streaming-embed {\n    z-index: 9999;\n    position: fixed;\n    left: 40px;\n    bottom: 40px;\n    width: 200px;\n    height: 200px;\n    border-radius: 50%;\n    border: 2px solid #fff;\n    box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, 0.12);\n    transition: all linear 0.1s;\n    overflow: hidden;\n\n    opacity: 0;\n    visibility: hidden;\n  }\n  #heygen-streaming-embed.show {\n    opacity: 1;\n    visibility: visible;\n  }\n  #heygen-streaming-embed.expand {\n    ${clientWidth<540?"height: 266px; width: 96%; left: 50%; transform: translateX(-50%);":"height: 366px; width: calc(366px * 16 / 9);"}\n    border: 0;\n    border-radius: 8px;\n  }\n  #heygen-streaming-container {\n    width: 100%;\n    height: 100%;\n  }\n  #heygen-streaming-container iframe {\n    width: 100%;\n    height: 100%;\n    border: 0;\n  }\n  `;const iframe=document.createElement("iframe");iframe.allowFullscreen=!1,iframe.title="Streaming Embed",iframe.role="dialog",iframe.allow="microphone",iframe.src=url;let visible=!1,initial=!1;window.addEventListener("message",(e=>{e.origin===host&&e.data&&e.data.type&&"streaming-embed"===e.data.type&&("init"===e.data.action?(initial=!0,wrapDiv.classList.toggle("show",initial)):"show"===e.data.action?(visible=!0,wrapDiv.classList.toggle("expand",visible)):"hide"===e.data.action&&(visible=!1,wrapDiv.classList.toggle("expand",visible)))})),container.appendChild(iframe),wrapDiv.appendChild(stylesheet),wrapDiv.appendChild(container),document.body.appendChild(wrapDiv)}(globalThis);</script>
-
-
+        // --- Initialisation au chargement de la page ---
+        loadFromLocalStorage();
+        updateNavHighlight();
+    });
+</script>
 </body>
-</html>
-```
+</html>```
